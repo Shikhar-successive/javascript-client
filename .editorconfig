@@ -1,0 +1,8 @@
+root = true  #special property that should be specified at the top
+
+[*]
+indent_style = space  #use hard tabs or soft tabs respectively
+indent_size = 5       #defining the number of columns used for each indentation level
+charset = utf-8       #to control the character set
+trim_trailing_whitespace = false #to remove any whitespace characters preceding newline characters
+insert_final_newline = false #to ensure file ends with a newline when saving
