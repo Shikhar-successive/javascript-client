@@ -16,18 +16,19 @@ let users = [
 
      {
           traineeEmail : "shyam.bansal@successive.tech",
-          reviewerEmail : "amit.kumar@successive.tech",
+          reviewerEmail : "@successive.techamit.kumar",
      },
 
      {
           traineeEmail : "rohan.kumawat@google.tech",
           reviewerEmail : "suraj.kumar@google.tech",
      },
+
 ]
 
 function validateEmail(user_email)
 {
-     return /@successive.tech/.test(user_email);     
+     return /^[a-zA-Z0-9+_.-]+@successive.tech+$/.test(user_email);     
 }
 
 function validateUsers(users)
