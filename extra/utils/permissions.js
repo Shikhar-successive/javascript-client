@@ -26,7 +26,7 @@ function hasPermissions(moduleName,role,permissionType)
      else
      {
           console.log("\n>>Checking Permission of",role,"in Module",moduleName,"of Type",permissionType,":");
-          return Object.getOwnPropertyNames(permissions).includes(moduleName)                                        //prints message if "ModuleName" is incorrect
+          return Object.getOwnPropertyNames(permissions).includes(moduleName);                                        //prints message if "ModuleName" is incorrect
      }
      }
      
