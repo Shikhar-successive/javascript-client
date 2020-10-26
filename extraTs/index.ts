@@ -3,7 +3,7 @@ import { hasPermissions, validateUsers } from './utils';
 import { users } from './constants';
 
 
-console.log('>> Diamond function with 4 rows');
+console.log('>>Diamond function with 4 rows');
 diamond(4);
 
 console.log('\n\n>> Equilatral Triangle function with 4 rows');

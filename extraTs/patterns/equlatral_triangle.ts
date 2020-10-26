@@ -5,15 +5,15 @@ export default function equlatral_triangle(row: number) {
      else {
           let blank: number = row - 1;
           for (let i: number = 0; i < row; i++) {
-               let triangle: string = '';
+               let eqTriangle: string = '';
                for (let j: number = 0; j < blank; j++) {
-                    triangle += ' ';
+                    eqTriangle += ' ';
                }
 
                for (let j: number = 0; j <= i; j++) {
-                    triangle += '* ';
+                    eqTriangle += '* ';
                }
-               console.log(triangle);
+               console.log(eqTriangle);
                blank--;
           }
     }

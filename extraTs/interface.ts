@@ -1,7 +1,7 @@
 export interface IPermissions {
      'getUsers': GetUsers;
 }
-export type GetUsers = {
+ type GetUsers = {
      all: string[];
      read: string[];
      write: string[];

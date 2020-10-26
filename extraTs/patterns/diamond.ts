@@ -5,15 +5,15 @@ export default function diamond(row: number) {
      else {
           let blank: number = row - 1;
           for (let i: number = 0 ; i < row ; i++) {
-               let upper: string = '';
+               let upperDiamond: string = '';
                for (let j: number = 0; j < blank; j++) {
-                    upper += ' ';
+                    upperDiamond += ' ';
                }
 
                for (let j: number = 0; j <= i; j++) {
-                    upper += '* ';
+                    upperDiamond += '* ';
                }
-               console.log(upper);
+               console.log(upperDiamond);
                blank--;
           }
 

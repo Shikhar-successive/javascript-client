@@ -1,4 +1,5 @@
-import { IPermissions, IUsers } from './interface';
+import { IPermissions } from './interface';
+import { IUsers } from './interface';
 export const permissions: IPermissions = {
      'getUsers': {
      all: ['head-trainer', 'manager'],

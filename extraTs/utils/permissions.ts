@@ -11,7 +11,7 @@ export default function hasPermissions(moduleName: string, role: string, permiss
      }
      }
      else {
-          console.log('>>Checking Permission of', role, 'in Module', moduleName, 'of Type', permissionType, ':');
+          console.log('>>Checking Permission of', role, 'in Module', moduleName, 'of Type', permissionType , ':');
           return false;                                        // prints message if "ModuleName" is incorrect
      }
      }

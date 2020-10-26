@@ -1,7 +1,6 @@
 import validateEmail from './helpers';
 import{ users } from '../constants';
 export default function validateUsers(Users: object): void {
-     const UserList: string[] = [];
      const ValidUser: string[] = [];
      const InvalidUser: string[] = [];
      for (let i: number = 0 ; i < Object.keys(Users).length ; i++) {

@@ -3,5 +3,5 @@ import validateUsers from './validation';
 
 export{
      hasPermissions,
-     validateUsers,
+     validateUsers
 };
