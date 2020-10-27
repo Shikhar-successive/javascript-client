@@ -1,4 +1,4 @@
-function equlatral_triangle(row)
+export default function equlatral_triangle(row)
 {
      if(row <= 1 || row >=10)
      {
@@ -24,5 +24,3 @@ function equlatral_triangle(row)
           }
     }    
 }
-
-equlatral_triangle(process.argv[2]);
