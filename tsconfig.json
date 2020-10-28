@@ -1,5 +1,5 @@
 {
-     "compilerOptions":{
+     "compilerOptions": {
      "module": "commonjs",
      "target": "es6",
      "noImplicitAny": false,
@@ -21,7 +21,7 @@
      },
      "exclude": ["dist"],
      "include": [
-     "extraTs"
+     "src"
      ],
      "types": ["src/types"]
 }
