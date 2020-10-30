@@ -1,35 +1,43 @@
-import config from './config/configuration';
 import * as experss from 'express';
-import IConfig from './config/IConfig';
- class Server{
+import * as bodyParser from 'body-parser';
+import { notFoundHandeler, errorHandler } from './libs/routes';
+ class Server {
      app;
-     constructor(private config:IConfig){
-          this.app = experss();          
+     constructor(private config) {
+          this.app = experss();
      }
 
-     bootstrap(){
+     bootstrap() {
           this.setupRoutes();
+          this.initBodyParser();
           return this;
      }
 
-     setupRoutes(){
+     setupRoutes() {
           const {app} = this;
-          app.get('/health-check', (req, res, next) => {
+          this.app.get('/health-check', (req, res, next) => {
                res.send('I am ok');
           });
-          return this;
+
+          this.app.use(notFoundHandeler);
+
+          this.app.use(errorHandler);
      }
 
-     run(){
+     initBodyParser() {
+          this.app.use(bodyParser.urlencoded({ extended: false }));
+     }
+
+     run() {
           const {app, config: {PORT}} = this;
           app.listen(PORT, (err) => {
-               if(err){
+               if (err) {
                     console.log(err);
                }
-               else{
+               else {
                     console.log(`App is running on port ${PORT}`);
                }
-          })
+          });
      }
 }
 
