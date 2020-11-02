@@ -1,6 +1,8 @@
 import * as experss from 'express';
 import * as bodyParser from 'body-parser';
+
 import { notFoundHandeler, errorHandler } from './libs/routes';
+import routes from './router';
  class Server {
      app;
      constructor(private config) {
@@ -18,6 +20,8 @@ import { notFoundHandeler, errorHandler } from './libs/routes';
           this.app.get('/health-check', (req, res, next) => {
                res.send('I am ok');
           });
+
+          this.app.use('/api', routes);
 
           this.app.use(notFoundHandeler);
 
