@@ -11,7 +11,7 @@ const config = {
           },
           name: {
                required: true,
-               regex: '',
+               regex: /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g,
                in: ['body'],
                errorMessage: 'Name is required',
                }

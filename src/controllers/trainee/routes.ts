@@ -8,8 +8,10 @@ const traineeRouter =  express.Router();
 
 traineeRouter.route('/')
      .get(validationHandler(validation.get), TraineeController.get)
-     .post(TraineeController.post)
-     .put(TraineeController.update)
-     .delete(TraineeController.delete);
+     .post(validationHandler(validation.create), TraineeController.post)
+     .put(validationHandler(validation.update), TraineeController.update)
+     .delete(validationHandler(validation.delete), TraineeController.delete);
+
+traineeRouter.route('/:id').delete(validationHandler(validation.delete), TraineeController.delete);
 
 export default traineeRouter;
