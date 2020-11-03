@@ -15,11 +15,7 @@ export default function(config) {
 
                const valKey = config[element];
                const req_location = valKey.in;
-               // console.log( Object.keys(req[valKey.in]).includes(element) )
-               // console.log(valKey.regex.test(req[req_location][element]))
-               //  console.log(Number.isInteger(req[req_location][element]))
-               // ==console.log("-------",!Number(req[req_location][element]))
-
+              
                if ( !Object.keys(req[valKey.in]).includes(element) ) {
                     console.log('--------!key', element);
                     ErrorArr.push(eror = {
@@ -100,8 +96,5 @@ export default function(config) {
               else {
                    next();
               }
-
-
-
      };
 }
