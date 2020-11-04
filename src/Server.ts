@@ -10,8 +10,8 @@ import routes from './router';
      }
 
      bootstrap() {
-          this.setupRoutes();
           this.initBodyParser();
+          this.setupRoutes();
           return this;
      }
 
@@ -29,7 +29,7 @@ import routes from './router';
      }
 
      initBodyParser() {
-          this.app.use(bodyParser.urlencoded({ extended: false }));
+          this.app.use(bodyParser.json());
      }
 
      run() {
