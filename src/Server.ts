@@ -45,7 +45,6 @@ import IConfig from './config/IConfig';
                     }
                     else {
                          console.log(`App is running on port ${PORT}`);
-                         Database.disconnect();
                     }
                });
 
