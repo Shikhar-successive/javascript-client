@@ -3,6 +3,8 @@ import * as bodyParser from 'body-parser';
 
 import { notFoundHandeler, errorHandler } from './libs/routes';
 import routes from './router';
+import Database from './libs/Database';
+import IConfig from './config/IConfig';
  class Server {
      app;
      constructor(private config) {
@@ -33,15 +35,24 @@ import routes from './router';
      }
 
      run() {
-          const {app, config: {PORT}} = this;
-          app.listen(PORT, (err) => {
-               if (err) {
-                    console.log(err);
-               }
-               else {
-                    console.log(`App is running on port ${PORT}`);
-               }
-          });
+          const {app, config: {PORT , MONGO_URL}} = this;
+          Database.open(MONGO_URL)
+               .then((res) => {
+               console.log('Connection successful');
+               app.listen(PORT, (err) => {
+                    if (err) {
+                         console.log(err);
+                    }
+                    else {
+                         console.log(`App is running on port ${PORT}`);
+                         Database.disconnect();
+                    }
+               });
+
+               })
+               .catch(err => console.log(err));
+
+               return this;
      }
 }
 
