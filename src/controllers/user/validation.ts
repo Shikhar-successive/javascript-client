@@ -1,6 +1,6 @@
 const config = {
      create: {
-          id: {
+          password: {
                required: true,
                string: true,
                in: ['body'],
@@ -9,9 +9,9 @@ const config = {
                      throw { error: 'Error Occured', message: 'Message' };
                     }
           },
-          name: {
+          email: {
                required: true,
-               regex: /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g,
+               regex: /^[a-zA-Z0-9+_.-]+@+[a-zA-Z0-9+_.-].[a-zA-Z0-9+_.-]+$/,
                in: ['body'],
                errorMessage: 'Name is required',
                }
