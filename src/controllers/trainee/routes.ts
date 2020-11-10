@@ -15,4 +15,13 @@ traineeRouter.route('/')
 
 traineeRouter.route('/:id').delete(authMiddilware('getUsers', 'read'), validationHandler(validation.delete), TraineeController.delete);
 
+traineeRouter.route('/getall')
+     .get(TraineeController.getAll);
+
+traineeRouter.route('/findone')
+     .get(TraineeController.findOne);
+
+traineeRouter.route('/create')
+     .post(TraineeController.createUser);
+
 export default traineeRouter;

@@ -1,5 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import  hasPermissions  from '../checkPermission';
+import configuration from '../../config/configuration';
 
 
 export default(module, permissionType) => (req, res, next) => {
@@ -9,8 +10,9 @@ export default(module, permissionType) => (req, res, next) => {
           // console.log('header is ', req.headers['authorization']);
           try {
                const token = req.headers.authorization;
+               const key = configuration.SECRET_KEY;
                console.log(token);
-               const decodeUser = jwt.verify(token, 'qwertyuiopasdfghjklzxcvbnm123456');
+               const decodeUser = jwt.verify(token, key);
                console.log(decodeUser.docs);
                console.log(decodeUser.docs.role, module, permissionType);
                console.log(hasPermissions(module, decodeUser.docs.role, permissionType));
@@ -19,14 +21,14 @@ export default(module, permissionType) => (req, res, next) => {
                     next();
                }
                else {
-                     next({
+                     req.send({
                          error: 403,
                          message: 'Unauthorized'
                     });
                }
 
           } catch (error) {
-               next({
+               req.send({
                     error: 403,
                     message: 'Unauthorized'
                });

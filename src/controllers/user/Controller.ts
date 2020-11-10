@@ -36,8 +36,6 @@ class UserController {
      }
 
      login(req: Request, res: Response, next: NextFunction) {
-          // console.log(req.body.email);
-          // const userCred = req.body;
           try {userModel.findOne({email: req.body.email, password: req.body.password}, (err, docs) => {
                     if (err) {
                          console.log(err);
@@ -70,6 +68,7 @@ class UserController {
 
      me(req: Request, res: Response, next: NextFunction) {
           const user = res.locals.val;
+          console.log('-------------------------', user);
           res.send({
                 data: user
           });

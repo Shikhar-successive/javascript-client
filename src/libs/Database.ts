@@ -13,7 +13,7 @@ class Database {
                          return;
                     }
                     seedData();
-                    resolve(null);
+                    resolve();
                });
           });
 

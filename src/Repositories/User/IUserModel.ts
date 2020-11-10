@@ -1,6 +1,6 @@
-import * as mongoose from 'mongoose';
+import IversionableDocument from '../versionable/IVersionableDocument';
 
-interface IUserModel extends mongoose.Document {
+interface IUserModel extends IversionableDocument {
      id: string;
      name: string;
      email: string;
