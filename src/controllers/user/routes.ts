@@ -20,5 +20,5 @@ UserRouter.route('/login')
      .post(validationHandler(validation.create), UserController.login);
 
 UserRouter.route('/me')
-     .get(authMiddilware('getUsers', 'read'), UserController.me);
+     .get(validationHandler(validation.get), authMiddilware('getUsers', 'read'), UserController.me);
 export default UserRouter;

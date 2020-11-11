@@ -30,7 +30,7 @@ export default(module, permissionType) => (req, res, next) => {
           } catch (error) {
                req.send({
                     error: 403,
-                    message: 'Unauthorized'
+                    message: 'Something went wrong'
                });
           }
 };

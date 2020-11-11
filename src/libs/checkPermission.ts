@@ -1,4 +1,4 @@
-import { permissions } from '../../extraTs/constants';
+import { permissions } from './constants';
 export default function hasPermissions(moduleName: string, role: string, permissionType: string): boolean {
      if (Object.getOwnPropertyNames(permissions).toString() === moduleName) {
      if (permissions[moduleName].all.includes(role)) {

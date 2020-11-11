@@ -9,7 +9,7 @@
     "start:extra": "babel-node extra",
     "start:extraTs": "tsc-watch --project . --onSuccess \"npm run nodemon\"",
     "start": "tsc-watch --project . --onSuccess \"npm run nodemon\"",
-    "nodemon": "nodemon ./dist/src/index.js",
+    "nodemon": "nodemon ./dist/index.js",
     "lint": "tslint -c tslint.json -p tsconfig.json --exclude 'node_modules/**/*.{j,t}s'",
     "lint:fix": "npm run lint --fix"
   },
@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@types/mongoose": "^5.7.37",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "i": "^0.3.6",
     "jsonwebtoken": "^8.5.1",

@@ -7,6 +7,10 @@ export default class VersionableSchema extends mongoose.Schema {
                     default: Date.now,
                     type: Date,
                },
+               updatedAt: {
+                    required: false,
+                    type: Date,
+               },
                deletedAt: {
                     required: false,
                     type: Date,
@@ -14,7 +18,20 @@ export default class VersionableSchema extends mongoose.Schema {
                originalId: {
                     required: true,
                     type: String,
-               }}, options);
+               },
+               createdBy: {
+                    required: false,
+                    type: String,
+               },
+               updatedBy: {
+                    required: false,
+                    type: String,
+               },
+               deletedBy: {
+                    required: false,
+                    type: String,
+               },
+               }, options);
                super(versionedOptions, collections);
      }
 }

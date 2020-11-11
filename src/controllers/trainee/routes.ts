@@ -16,12 +16,21 @@ traineeRouter.route('/')
 traineeRouter.route('/:id').delete(authMiddilware('getUsers', 'read'), validationHandler(validation.delete), TraineeController.delete);
 
 traineeRouter.route('/getall')
-     .get(TraineeController.getAll);
+     .get(validationHandler(validation.get), TraineeController.getAll);
 
 traineeRouter.route('/findone')
-     .get(TraineeController.findOne);
+     .get(validationHandler(validation.get), TraineeController.findOne);
 
 traineeRouter.route('/create')
-     .post(TraineeController.createUser);
+     .post(validationHandler(validation.Newcreate), TraineeController.createUser);
+
+traineeRouter.route('/find')
+     .get(validationHandler(validation.post), TraineeController.find);
+
+traineeRouter.route('/del')
+     .post(validationHandler(validation.delete), TraineeController.deleterec);
+
+traineeRouter.route('/update')
+     .post(validationHandler(validation.update), TraineeController.update);
 
 export default traineeRouter;

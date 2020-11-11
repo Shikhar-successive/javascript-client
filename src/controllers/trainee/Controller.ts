@@ -101,6 +101,31 @@ class TraineeController {
           }
      }
 
+     find(req: Request, res: Response, next: NextFunction) {
+          try {
+               console.log('Inside find method');
+               const userRepository: UserRepository = new UserRepository();
+               userRepository.find(req.body, (err, data) => {
+                    if (err) {
+                         console.log(err);
+                    }
+                    else {
+                         console.log(data);
+                         res.send({
+                              message: 'Records fetched',
+                              data: [
+                                   {
+                                        Data: data
+                                   }
+                              ]
+                         });
+                    }
+               });
+          } catch (err) {
+               console.log('inside err');
+          }
+     }
+
      post(req: Request, res: Response, next: NextFunction) {
           try {
                console.log('Inside POST method');
@@ -118,6 +143,9 @@ class TraineeController {
 
      update(req: Request, res: Response, next: NextFunction) {
           try {
+               console.log('Inside find method');
+               const userRepository: UserRepository = new UserRepository();
+               userRepository.update(req.body);
                console.log('Inside UPDATE method');
                res.send({
                     message: 'Trainee updated',
@@ -133,6 +161,24 @@ class TraineeController {
 
      delete(req: Request, res: Response, next: NextFunction) {
           try {
+               console.log('Inside DELETE method');
+               res.send({
+                    message: 'Trainee deleted',
+                    data: {
+                              name: 'trainee1',
+                              address: 'noida'
+                         }
+               });
+          } catch (err) {
+               console.log('inside err');
+          }
+     }
+
+     deleterec(req: Request, res: Response, next: NextFunction) {
+          try {
+               const userRepository: UserRepository = new UserRepository();
+               userRepository.delete(req.body.id, req.body.deletedBy);
+
                console.log('Inside DELETE method');
                res.send({
                     message: 'Trainee deleted',
