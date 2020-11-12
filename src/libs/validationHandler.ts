@@ -1,107 +1,106 @@
-import e from 'express';
+import e, { query } from 'express';
 
 export default function(config) {
-     return function(req, res, next) {
+     return (req, res, next) => {
           let eror = {
-               key : '',
+               key: '',
                location: '',
                Message: ''
           };
-
+          console.log('---------inside validation handel');
           const ErrorArr: object[] = [];
-          const key_arr: string[] = Object.keys(config);
-          key_arr.forEach(function(element) {
+          const keyArray: string[] = Object.keys(config);
+          keyArray.forEach((element) => {
 
 
-               const valKey = config[element];
-               const req_location = valKey.in;
+                    const valKey = config[element];
+                    const reqLocation = valKey.in;
 
-               if ( !Object.keys(req[valKey.in]).includes(element) ) {
-                    console.log('--------!key', element);
-                    ErrorArr.push(eror = {
-                         key : element,
-                         location: config[element].in,
-                         Message: config[element].errorMessage || 'Wrong Key'
-                    });
-                    return;
-               }
+                    // if ( !Object.keys(req[valKey.in]).includes(element) ) {
+                    //      console.log('--------!key', element);
+                    //      ErrorArr.push(eror = {
+                    //           key : element,
+                    //           location: config[element].in,
+                    //           Message: config[element].errorMessage || 'Wrong Key'
+                    //      });
+                    //      return;
+                    // }
+                    if (valKey.required && !(req[reqLocation][element])) {
+                         console.log('--------req', element);
+                         ErrorArr.push(eror = {
+                              key: element,
+                              location: config[element].in,
+                              Message: config[element].errorMessage || 'Key Required'
+                         });
+                         return;
+                    }
 
-               if (valKey.required && !(req[req_location][element]) ) {
-                    console.log('--------req', element);
-                    ErrorArr.push(eror = {
-                                   key : element,
+
+                    if (!valKey.required && !(req[reqLocation][element])) {
+                         console.log('--------default val', element);
+                         req[reqLocation][element] = config[element].default;
+                         console.log(element, req[reqLocation][element]);
+                    }
+
+                    if (valKey.number) {
+                         if (!(Number.isInteger(Number(req[reqLocation][element])))) { // add && check name
+                              console.log('--------number', element);
+                              ErrorArr.push(eror = {
+                                   key: element,
                                    location: config[element].in,
-                                   Message: config[element].errorMessage || 'Key Required'
-                    });
-                    return;
-               }
-
-
-               if ( !valKey.required && !(req[req_location][element]) ) {
-                    console.log('--------default val', element);
-                    req[req_location][element] = config[element].default;
-                    console.log(element, req[req_location][element]);
-               }
-
-               if (valKey.number) {
-                    if ( !(Number.isInteger(Number(req[req_location][element]))) ) {     // add && check name
-                         console.log('--------number', element);
-                         ErrorArr.push(eror = {
-                              key : element,
-                              location: config[element].in,
-                              Message: config[element].errorMessage || 'Number is Wrong'
-                         });
+                                   Message: config[element].errorMessage || 'Number is Wrong'
+                              });
+                         }
+                         return;
                     }
-                    return;
-               }
 
-               if (valKey.string) {
-                    if (!(typeof req[req_location][element] === 'string')) {
-                         console.log('--------string', element);
-                         ErrorArr.push(eror = {
-                              key : element,
-                              location: config[element].in,
-                              Message: config[element].errorMessage || 'String is wrong'
-                         });
+                    if (valKey.string) {
+                         if (!(typeof req[reqLocation][element] === 'string')) {
+                              console.log('--------string', element);
+                              ErrorArr.push(eror = {
+                                   key: element,
+                                   location: config[element].in,
+                                   Message: config[element].errorMessage || 'String is wrong'
+                              });
+                         }
+                         return;
                     }
-                    return;
-               }
 
-               if (valKey.regex) {
-                    const reg = valKey.regex;
-                    const testVal = req[req_location][element];
-                    console.log(reg);
-                    console.log(reg.test(testVal));
-                    if (!reg.test(testVal)) {
-                         console.log('--------regex', element);
-                         ErrorArr.push(eror = {
-                              key : element,
-                              location: config[element].in,
-                              Message: config[element].errorMessage && 'Regex error'
-                         });
+                    if (valKey.regex) {
+                         const reg = valKey.regex;
+                         const testVal = req[reqLocation][element];
+                         console.log(reg);
+                         console.log(reg.test(testVal));
+                         if (!reg.test(testVal)) {
+                              console.log('--------regex', element);
+                              ErrorArr.push(eror = {
+                                   key: element,
+                                   location: config[element].in,
+                                   Message: config[element].errorMessage && 'Regex error'
+                              });
+                         }
+                         return;
                     }
-                    return;
-               }
 
-               if (valKey.isObject) {
-                    if (!(typeof req[req_location][element] === 'object')) {
-                         console.log('--------object', element);
-                         ErrorArr.push(eror = {
-                              key : element,
-                              location: config[element].in,
-                              Message: config[element].errorMessage || 'Object error'
-                         });
+                    if (valKey.isObject) {
+                         if (!(typeof req[reqLocation][element] === 'object')) {
+                              console.log('--------object', element);
+                              ErrorArr.push(eror = {
+                                   key: element,
+                                   location: config[element].in,
+                                   Message: config[element].errorMessage || 'Object error'
+                              });
+                         }
+                         return;
                     }
-                    return;
-               }
-               // console.log(ErrorArr);
-
-          } );
-              if (ErrorArr.length !== 0) {
-                   res.send(ErrorArr);
-              }
-              else {
-                   next();
-              }
+                    // console.log(ErrorArr);
+               });
+          console.log('--------',ErrorArr);
+          if (ErrorArr.length !== 0) {
+               res.send(ErrorArr);
+          }
+          else {
+               next();
+          }
      };
 }

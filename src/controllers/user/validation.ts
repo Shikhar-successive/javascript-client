@@ -11,7 +11,7 @@ const config = {
           },
           email: {
                required: true,
-               regex: /^[a-zA-Z0-9+_.-]+@+[a-zA-Z0-9+_.-].[a-zA-Z0-9+_.-]+$/,
+               regex: /^[a-zA-Z0-9+_.-]+@+[a-zA-Z0-9+_.-]+.+[a-zA-Z0-9+_.-]+$/,
                in: ['body'],
                errorMessage: 'Name is required',
                }

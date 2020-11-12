@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import traineeRouter from './routes';
+import UserRepository from '../../Repositories/User/UserRepository';
+import VersioningRepository from '../../Repositories/versionable/VersioningRepository';
+import IUserModel from '../../Repositories/User/IUserModel';
+
 
 class TraineeController {
      static instance: TraineeController;
@@ -18,13 +21,105 @@ class TraineeController {
           try {
                console.log('Inside GET method');
                res.send({
-                    message: 'Trainee fetched',
+                    message: 'GenerateID fetched',
                     data: [
                          {
-                              name: 'trainee1',
-                              address: 'noida'
+
                          }
                     ]
+               });
+          } catch (err) {
+               console.log('inside err');
+          }
+     }
+
+     getAll(req: Request, res: Response, next: NextFunction) {
+          try {
+               console.log('Inside getall method');
+               const userRepository: UserRepository = new UserRepository();
+               userRepository.getAll({}, (err, data) => {
+                    if (err) {
+                         console.log(err);
+                    }
+                    else {
+                         console.log(data);
+                         res.send({
+                              message: 'Records fetched',
+                              data: [
+                                   {
+                                        Data: data
+                                   }
+                              ]
+                         });
+                    }
+               });
+          } catch (err) {
+               console.log('inside err');
+          }
+     }
+
+     findOne(req: Request, res: Response, next: NextFunction) {
+          try {
+               const userRepository: UserRepository = new UserRepository();
+               const find = userRepository.findOne({email: 'trainerX@successive.tech'}, (err, data) => {
+                    if (err) {
+                         console.log(err);
+                    }
+                    else {
+                         console.log(data);
+                         res.send({
+                              message: 'Trainee fetched',
+                              data: [
+                                   {
+                                        Userdata: data
+                                   }
+                              ]
+                         });
+                    }
+               });
+               console.log('Inside GET method');
+          } catch (err) {
+               console.log('inside err');
+          }
+     }
+
+     createUser(req: Request, res: Response, next: NextFunction) {
+          try {
+               const userRepository: UserRepository = new UserRepository();
+               userRepository.createX(req.body );
+               console.log('Inside creteuser method');
+               res.send({
+                    message: 'Trainee created',
+                    data: [
+                         {
+                              data: 'data'
+                         }
+                    ]
+               });
+          } catch (err) {
+               console.log('inside err');
+          }
+     }
+
+     find(req: Request, res: Response, next: NextFunction) {
+          try {
+               console.log('Inside find method');
+               const userRepository: UserRepository = new UserRepository();
+               userRepository.find(req.body, (err, data) => {
+                    if (err) {
+                         console.log(err);
+                    }
+                    else {
+                         console.log(data);
+                         res.send({
+                              message: 'Records fetched',
+                              data: [
+                                   {
+                                        Data: data
+                                   }
+                              ]
+                         });
+                    }
                });
           } catch (err) {
                console.log('inside err');
@@ -48,6 +143,9 @@ class TraineeController {
 
      update(req: Request, res: Response, next: NextFunction) {
           try {
+               console.log('Inside find method');
+               const userRepository: UserRepository = new UserRepository();
+               userRepository.update(req.body);
                console.log('Inside UPDATE method');
                res.send({
                     message: 'Trainee updated',
@@ -63,6 +161,24 @@ class TraineeController {
 
      delete(req: Request, res: Response, next: NextFunction) {
           try {
+               console.log('Inside DELETE method');
+               res.send({
+                    message: 'Trainee deleted',
+                    data: {
+                              name: 'trainee1',
+                              address: 'noida'
+                         }
+               });
+          } catch (err) {
+               console.log('inside err');
+          }
+     }
+
+     deleterec(req: Request, res: Response, next: NextFunction) {
+          try {
+               const userRepository: UserRepository = new UserRepository();
+               userRepository.delete(req.body.id, req.body.deletedBy);
+
                console.log('Inside DELETE method');
                res.send({
                     message: 'Trainee deleted',
