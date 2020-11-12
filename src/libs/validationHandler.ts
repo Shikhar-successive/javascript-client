@@ -15,7 +15,7 @@ export default function(config) {
 
                const valKey = config[element];
                const req_location = valKey.in;
-              
+
                if ( !Object.keys(req[valKey.in]).includes(element) ) {
                     console.log('--------!key', element);
                     ErrorArr.push(eror = {
@@ -23,6 +23,7 @@ export default function(config) {
                          location: config[element].in,
                          Message: config[element].errorMessage || 'Wrong Key'
                     });
+                    return;
                }
 
                if (valKey.required && !(req[req_location][element]) ) {
@@ -32,6 +33,7 @@ export default function(config) {
                                    location: config[element].in,
                                    Message: config[element].errorMessage || 'Key Required'
                     });
+                    return;
                }
 
 
@@ -50,6 +52,7 @@ export default function(config) {
                               Message: config[element].errorMessage || 'Number is Wrong'
                          });
                     }
+                    return;
                }
 
                if (valKey.string) {
@@ -61,19 +64,23 @@ export default function(config) {
                               Message: config[element].errorMessage || 'String is wrong'
                          });
                     }
+                    return;
                }
 
                if (valKey.regex) {
                     const reg = valKey.regex;
                     const testVal = req[req_location][element];
+                    console.log(reg);
+                    console.log(reg.test(testVal));
                     if (!reg.test(testVal)) {
                          console.log('--------regex', element);
                          ErrorArr.push(eror = {
                               key : element,
                               location: config[element].in,
-                              Message: config[element].errorMessage || 'Regex error'
+                              Message: config[element].errorMessage && 'Regex error'
                          });
                     }
+                    return;
                }
 
                if (valKey.isObject) {
@@ -85,9 +92,9 @@ export default function(config) {
                               Message: config[element].errorMessage || 'Object error'
                          });
                     }
-
+                    return;
                }
-               console.log(ErrorArr);
+               // console.log(ErrorArr);
 
           } );
               if (ErrorArr.length !== 0) {
