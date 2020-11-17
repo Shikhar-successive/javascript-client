@@ -7,30 +7,31 @@ import { authMiddilware } from '../../libs/routes';
 
 const traineeRouter =  express.Router();
 
-traineeRouter.route('/')
-     .get(authMiddilware('getUsers', 'read'), validationHandler(validation.get), TraineeController.get)
-     .post(authMiddilware('getUsers', 'read'), validationHandler(validation.create), TraineeController.post)
-     .put(authMiddilware('getUsers', 'read'), validationHandler(validation.update), TraineeController.update)
-     .delete(authMiddilware('getUsers', 'read'), validationHandler(validation.delete), TraineeController.delete);
+// traineeRouter.route('/')
+//      .get(authMiddilware('getUsers', 'read'), validationHandler(validation.get), TraineeController.get)
+//      .post(authMiddilware('getUsers', 'read'), validationHandler(validation.create), TraineeController.post)
+//      .put(authMiddilware('getUsers', 'read'), validationHandler(validation.update), TraineeController.update)
+//      .delete(authMiddilware('getUsers', 'read'), validationHandler(validation.delete), TraineeController.delete);
 
-traineeRouter.route('/:id').delete(authMiddilware('getUsers', 'read'), validationHandler(validation.delete), TraineeController.delete);
+// traineeRouter.route('/:id')
+//      .delete(authMiddilware('getUsers', 'read'), validationHandler(validation.delete), TraineeController.delete);
 
 traineeRouter.route('/getall')
-     .get(validationHandler(validation.get), TraineeController.getAll);
+     .get(authMiddilware('getUsers', 'read'), validationHandler(validation.get), TraineeController.getAll);
 
 traineeRouter.route('/findone')
-     .get(validationHandler(validation.get), TraineeController.findOne);
+     .get(authMiddilware('getUsers', 'read'), validationHandler(validation.post), TraineeController.findOne);
 
 traineeRouter.route('/create')
-     .post(validationHandler(validation.Newcreate), TraineeController.createUser);
+     .post(authMiddilware('getUsers', 'read'), validationHandler(validation.Newcreate), TraineeController.createUser);
 
-traineeRouter.route('/find')
-     .get(validationHandler(validation.post), TraineeController.find);
+traineeRouter.route('/search')
+     .get(authMiddilware('getUsers', 'read'), validationHandler(validation.post), TraineeController.search);
 
 traineeRouter.route('/del')
-     .post(validationHandler(validation.delete), TraineeController.deleterec);
+     .post(authMiddilware('getUsers', 'read'), validationHandler(validation.delete), TraineeController.deleterec);
 
 traineeRouter.route('/update')
-     .post(validationHandler(validation.update), TraineeController.update);
+     .post(authMiddilware('getUsers', 'read'), validationHandler(validation.update), TraineeController.update);
 
 export default traineeRouter;

@@ -1,8 +1,8 @@
 import * as jwt from 'jsonwebtoken';
-import * as mongoose from 'mongoose';
+import config from '../../config/configuration';
 import { userModel } from '../../Repositories/User/UserModel';
 import { Request, Response, NextFunction } from 'express';
-import traineeRouter from './routes';
+import * as bcrypt from 'bcrypt';
 
 class UserController {
      static instance: UserController;
@@ -18,31 +18,32 @@ class UserController {
      }
 
 
-     get(req: Request, res: Response, next: NextFunction) {
-          try {
-               console.log('Inside GET method');
-               res.send({
-                    message: 'User fetched',
-                    data: [
-                         {
-                              name: 'User1',
-                              address: 'noida'
-                         }
-                    ]
-               });
-          } catch (err) {
-               console.log('inside err');
-          }
-     }
+     // get(req: Request, res: Response, next: NextFunction) {
+     //      try {
+     //           console.log('Inside GET method');
+     //           res.send({
+     //                message: 'User fetched',
+     //                data: [
+     //                     {
+     //                          name: 'User1',
+     //                          address: 'noida'
+     //                     }
+     //                ]
+     //           });
+     //      } catch (err) {
+     //           console.log('inside err');
+     //      }
+     // }
 
      login(req: Request, res: Response, next: NextFunction) {
-          try {userModel.findOne({email: req.body.email, password: req.body.password}, (err, docs) => {
+          try {
+
+               userModel.findOne({email: req.body.email}, (err, docs) => {
                     if (err) {
                          console.log(err);
-                    }
-                    else {
+                         }
+                    else if (docs === null) {
                          console.log(docs);
-                         if (docs === null) {
                          res.send({
                               message: 'Invalid User',
                               data: {
@@ -50,14 +51,29 @@ class UserController {
                                    }
                               });
                          }
-                         else {
-                              const token = jwt.sign({ docs }, 'qwertyuiopasdfghjklzxcvbnm123456');
-                              res.send({
-                                   Data: token,
-                                   Message: 'Login Successfull',
-                                   status: 200
-                              });
-                         }
+                    else if (docs !== null) {
+                         bcrypt.compare(req.body.password, docs.password, (error, data: boolean) => {
+                                        if (error) {
+                                             console.log('bcrypt compare error');
+                                        }
+                                        else if (data) {
+                                             console.log(docs);
+                                             const token = jwt.sign({ docs }, config.SECRET_KEY, {expiresIn: '1d'});
+                                             res.send({
+                                                  Data: token,
+                                                  Message: 'Login Successfull',
+                                                  status: 200
+                                             });
+                                        }
+                                        else {
+                                             res.send({
+                                                  message: 'Invalid Password',
+                                                  data: {
+                                                            name: req.body.password,
+                                                       }
+                                                  });
+                                        }
+                         });
                     }
                });
           }
@@ -74,51 +90,51 @@ class UserController {
           });
      }
 
-     post(req: Request, res: Response, next: NextFunction) {
-          try {
+     // post(req: Request, res: Response, next: NextFunction) {
+     //      try {
 
-               console.log('Inside POST method');
-               res.send({
-                    message: 'User created',
-                    data: {
-                              name: 'User1',
-                              address: 'noida'
-                         }
-               });
-          } catch (err) {
-               console.log('inside err');
-          }
-     }
+     //           console.log('Inside POST method');
+     //           res.send({
+     //                message: 'User created',
+     //                data: {
+     //                          name: 'User1',
+     //                          address: 'noida'
+     //                     }
+     //           });
+     //      } catch (err) {
+     //           console.log('inside err');
+     //      }
+     // }
 
-     update(req: Request, res: Response, next: NextFunction) {
-          try {
-               console.log('Inside UPDATE method');
-               res.send({
-                    message: 'User updated',
-                    data: {
-                              name: 'User2',
-                              address: 'pune'
-                         }
-               });
-          } catch (err) {
-               console.log('inside err');
-          }
-     }
+     // update(req: Request, res: Response, next: NextFunction) {
+     //      try {
+     //           console.log('Inside UPDATE method');
+     //           res.send({
+     //                message: 'User updated',
+     //                data: {
+     //                          name: 'User2',
+     //                          address: 'pune'
+     //                     }
+     //           });
+     //      } catch (err) {
+     //           console.log('inside err');
+     //      }
+     // }
 
-     delete(req: Request, res: Response, next: NextFunction) {
-          try {
-               console.log('Inside DELETE method');
-               res.send({
-                    message: 'User deleted',
-                    data: {
-                              name: 'User1',
-                              address: 'noida'
-                         }
-               });
-          } catch (err) {
-               console.log('inside err');
-          }
-     }
+     // delete(req: Request, res: Response, next: NextFunction) {
+     //      try {
+     //           console.log('Inside DELETE method');
+     //           res.send({
+     //                message: 'User deleted',
+     //                data: {
+     //                          name: 'User1',
+     //                          address: 'noida'
+     //                     }
+     //           });
+     //      } catch (err) {
+     //           console.log('inside err');
+     //      }
+     // }
 }
 
 export default UserController.getInstance();

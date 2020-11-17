@@ -7,7 +7,7 @@ import Database from './libs/Database';
 import IConfig from './config/IConfig';
  class Server {
      app;
-     constructor(private config) {
+     constructor(private config: IConfig) {
           this.app = experss();
      }
 

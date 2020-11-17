@@ -1,19 +1,18 @@
+import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import  hasPermissions  from '../checkPermission';
-import configuration from '../../config/configuration';
+import config from '../../config/configuration';
 
 
-export default(module, permissionType) => (req, res, next) => {
+export default(module, permissionType) => (req: Request, res: Response, next: NextFunction) => {
      console.log('=================================');
-
-          // console.log('congif is ', module, permissionType);
-          // console.log('header is ', req.headers['authorization']);
           try {
-               const token = req.headers.authorization;
-               const key = configuration.SECRET_KEY;
+               const auth = 'authorization';
+               const token = req.headers[auth];
+               const key = config.SECRET_KEY;
                console.log(token);
                const decodeUser = jwt.verify(token, key);
-               console.log(decodeUser.docs);
+               console.log('-------', decodeUser.docs);
                console.log(decodeUser.docs.role, module, permissionType);
                console.log(hasPermissions(module, decodeUser.docs.role, permissionType));
                if (hasPermissions(module, decodeUser.docs.role, permissionType)) {
@@ -21,16 +20,16 @@ export default(module, permissionType) => (req, res, next) => {
                     next();
                }
                else {
-                     req.send({
+                     res.send({
                          error: 403,
                          message: 'Unauthorized'
                     });
                }
 
-          } catch (error) {
-               req.send({
-                    error: 403,
-                    message: 'Something went wrong'
+          } catch (err) {
+               res.send({
+                    error: err,
+                    message: 'Token Expired'
                });
           }
 };
