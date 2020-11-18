@@ -73,7 +73,14 @@ const config = {
                     number: true,
                     in: ['query'],
                     errorMessage: 'Limit is invalid',
-               }
+               },
+               sortby: {
+                    required: false,
+                    default: '',
+                    string: true,
+                    in: ['query'],
+                    errorMessage: 'sortby is invalid',
+               },
                },
 
 

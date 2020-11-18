@@ -24,7 +24,6 @@ export default class UserRepository extends VersioningRepository<IUserModel, mon
      }
 
      public count() {
-          // console.log('====> ',userModel.find.length);
           return userModel.countDocuments();
      }
 }

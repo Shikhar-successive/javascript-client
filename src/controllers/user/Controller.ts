@@ -17,27 +17,8 @@ class UserController {
           }
      }
 
-
-     // get(req: Request, res: Response, next: NextFunction) {
-     //      try {
-     //           console.log('Inside GET method');
-     //           res.send({
-     //                message: 'User fetched',
-     //                data: [
-     //                     {
-     //                          name: 'User1',
-     //                          address: 'noida'
-     //                     }
-     //                ]
-     //           });
-     //      } catch (err) {
-     //           console.log('inside err');
-     //      }
-     // }
-
      login(req: Request, res: Response, next: NextFunction) {
           try {
-
                userModel.findOne({email: req.body.email}, (err, docs) => {
                     if (err) {
                          console.log(err);
@@ -58,7 +39,7 @@ class UserController {
                                         }
                                         else if (data) {
                                              console.log(docs);
-                                             const token = jwt.sign({ docs }, config.SECRET_KEY, {expiresIn: '1d'});
+                                             const token = jwt.sign({ docs }, config.SECRET_KEY, {expiresIn: '15m'});
                                              res.send({
                                                   Data: token,
                                                   Message: 'Login Successfull',
@@ -90,51 +71,6 @@ class UserController {
           });
      }
 
-     // post(req: Request, res: Response, next: NextFunction) {
-     //      try {
-
-     //           console.log('Inside POST method');
-     //           res.send({
-     //                message: 'User created',
-     //                data: {
-     //                          name: 'User1',
-     //                          address: 'noida'
-     //                     }
-     //           });
-     //      } catch (err) {
-     //           console.log('inside err');
-     //      }
-     // }
-
-     // update(req: Request, res: Response, next: NextFunction) {
-     //      try {
-     //           console.log('Inside UPDATE method');
-     //           res.send({
-     //                message: 'User updated',
-     //                data: {
-     //                          name: 'User2',
-     //                          address: 'pune'
-     //                     }
-     //           });
-     //      } catch (err) {
-     //           console.log('inside err');
-     //      }
-     // }
-
-     // delete(req: Request, res: Response, next: NextFunction) {
-     //      try {
-     //           console.log('Inside DELETE method');
-     //           res.send({
-     //                message: 'User deleted',
-     //                data: {
-     //                          name: 'User1',
-     //                          address: 'noida'
-     //                     }
-     //           });
-     //      } catch (err) {
-     //           console.log('inside err');
-     //      }
-     // }
 }
 
 export default UserController.getInstance();

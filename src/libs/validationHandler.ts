@@ -16,15 +16,6 @@ export default function(config) {
                     const valKey = config[element];
                     const reqLocation = valKey.in;
 
-                    // if ( !Object.keys(req[valKey.in]).includes(element) ) {
-                    //      console.log('--------!key', element);
-                    //      ErrorArr.push(eror = {
-                    //           key : element,
-                    //           location: config[element].in,
-                    //           Message: config[element].errorMessage || 'Wrong Key'
-                    //      });
-                    //      return;
-                    // }
                     if (valKey.required && !(req[reqLocation][element])) {
                          console.log('--------req', element);
                          ErrorArr.push(eror = {
@@ -96,7 +87,7 @@ export default function(config) {
                     }
                     // console.log(ErrorArr);
                });
-          console.log('Erron array--------',ErrorArr);
+          console.log('Erron array--------', ErrorArr);
           if (ErrorArr.length !== 0) {
                res.send(ErrorArr);
           }

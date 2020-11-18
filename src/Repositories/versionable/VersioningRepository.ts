@@ -30,9 +30,9 @@ export default class VersioningRepository <D extends mongoose.Document, M extend
           return this.model.countDocuments(finalQuery);
      }
 
-     public getAll(query: any, projection: any = {}, options: any = {}): DocumentQuery<D[], D> {
+     public getAll(query: any, skip: any = {}, limit: any = {}, sort: any = {}): DocumentQuery<D[], D> {
           const finalQuery = { deletedAt: null, ...query };
-          return this.model.find(finalQuery, projection, options);
+          return this.model.find(finalQuery).skip(skip).limit(limit).sort(sort);
      }
 
      public findOne(query: any, options: any = {}): DocumentQuery<D, D> {
