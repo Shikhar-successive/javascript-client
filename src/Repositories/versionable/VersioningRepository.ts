@@ -59,19 +59,19 @@ export default class VersioningRepository <D extends mongoose.Document, M extend
      }
 
 
-     public updatedRecordAt(id: string, updater: string): any {
-          const findId: any = {originalId : id,
-                              updatedAt: {$exists: false},
-                              updatedBy: {$exists: false},
-                              deletedAt : {$exists: false},
-                              deletedBy : {$exists: false}};
+     // public updatedRecordAt(id: string, updater: string): any {
+          // const findId: any = {originalId : id,
+          //                     updatedAt: {$exists: false},
+          //                     updatedBy: {$exists: false},
+          //                     deletedAt : {$exists: false},
+          //                     deletedBy : {$exists: false}};
 
-          const updateRec: any = {updatedAt: Date.now(),
-                                  updatedBy: updater,
-                                  deletedAt: Date.now(),
-                                  deletedBy: updater};
-          return this.model.update( findId , updateRec );
-     }
+          // const updateRec: any = {updatedAt: Date.now(),
+          //                         updatedBy: updater,
+          //                         deletedAt: Date.now(),
+          //                         deletedBy: updater};
+          // return this.model.update( findId , updateRec );
+     // }
 
 
      public async update(data: any): Promise<D> {
@@ -91,6 +91,7 @@ export default class VersioningRepository <D extends mongoose.Document, M extend
           console.log('New data: ', newData);
           newData._id = VersioningRepository.generateObjectId();
           delete newData.deleteAt;
+          newData.updatedAt = Date.now();
           const model = new this.model(newData);
           return model.save();
      }

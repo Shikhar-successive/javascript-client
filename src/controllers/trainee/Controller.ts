@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import UserRepository from '../../Repositories/User/UserRepository';
-import VersioningRepository from '../../Repositories/versionable/VersioningRepository';
-import IUserModel from '../../Repositories/User/IUserModel';
-
+import * as bcrypt from 'bcrypt';
+import * as mongoose from 'mongoose';
 
 class TraineeController {
      static instance: TraineeController;
@@ -17,27 +16,27 @@ class TraineeController {
           }
      }
 
-     get(req: Request, res: Response, next: NextFunction) {
-          try {
-               console.log('Inside GET method');
-               res.send({
-                    message: 'GenerateID fetched',
-                    data: [
-                         {
+     // get(req: Request, res: Response, next: NextFunction) {
+     //      try {
+     //           console.log('Inside GET method');
+     //           res.send({
+     //                message: 'GenerateID fetched',
+     //                data: [
+     //                     {
 
-                         }
-                    ]
-               });
-          } catch (err) {
-               console.log('inside err');
-          }
-     }
+     //                     }
+     //                ]
+     //           });
+     //      } catch (err) {
+     //           console.log('inside err');
+     //      }
+     // }
 
-     getAll(req: Request, res: Response, next: NextFunction) {
+     async getAll(req: Request, res: Response, next: NextFunction) {
           try {
                console.log('Inside getall method');
                const userRepository: UserRepository = new UserRepository();
-               userRepository.getAll({}, (err, data) => {
+               await userRepository.getAll({}, (err, data) => {
                     if (err) {
                          console.log(err);
                     }
@@ -47,7 +46,8 @@ class TraineeController {
                               message: 'Records fetched',
                               data: [
                                    {
-                                        Data: data
+                                       Total_Records: data.length,
+                                       Records: data
                                    }
                               ]
                          });
@@ -58,17 +58,17 @@ class TraineeController {
           }
      }
 
-     findOne(req: Request, res: Response, next: NextFunction) {
+     async findOne(req: Request, res: Response, next: NextFunction) {
           try {
                const userRepository: UserRepository = new UserRepository();
-               const find = userRepository.findOne({email: 'trainerX@successive.tech'}, (err, data) => {
+               await userRepository.findOne({email: req.body.email, name: req.body.name}, (err, data) => {
                     if (err) {
                          console.log(err);
                     }
                     else {
                          console.log(data);
                          res.send({
-                              message: 'Trainee fetched',
+                              message: 'Record fetched',
                               data: [
                                    {
                                         Userdata: data
@@ -83,29 +83,37 @@ class TraineeController {
           }
      }
 
-     createUser(req: Request, res: Response, next: NextFunction) {
+     async createUser(req: Request, res: Response, next: NextFunction) {
           try {
-               const userRepository: UserRepository = new UserRepository();
-               userRepository.createX(req.body );
-               console.log('Inside creteuser method');
-               res.send({
-                    message: 'Trainee created',
-                    data: [
-                         {
-                              data: 'data'
-                         }
-                    ]
+               await bcrypt.hash(req.body.password, 5 , (error, userPwd) => {
+                    if (error) {
+                         console.log('Password Hash error');
+                    }
+                    else {
+                         req.body.password = userPwd;
+                         const userRepository: UserRepository = new UserRepository();
+                         userRepository.createX(req.body );
+                         console.log('Inside creteuser method');
+                         res.send({
+                              message: 'Trainee created',
+                              data: [
+                                   {
+                                        data: req.body
+                                   }
+                              ]
+                         });
+                    }
                });
           } catch (err) {
                console.log('inside err');
           }
      }
 
-     find(req: Request, res: Response, next: NextFunction) {
+     async search(req: Request, res: Response, next: NextFunction) {
           try {
                console.log('Inside find method');
                const userRepository: UserRepository = new UserRepository();
-               userRepository.find(req.body, (err, data) => {
+               await userRepository.find(req.body, (err, data) => {
                     if (err) {
                          console.log(err);
                     }
@@ -126,20 +134,20 @@ class TraineeController {
           }
      }
 
-     post(req: Request, res: Response, next: NextFunction) {
-          try {
-               console.log('Inside POST method');
-               res.send({
-                    message: 'Trainee created',
-                    data: {
-                              name: 'trainee1',
-                              address: 'noida'
-                         }
-               });
-          } catch (err) {
-               console.log('inside err');
-          }
-     }
+     // post(req: Request, res: Response, next: NextFunction) {
+     //      try {
+     //           console.log('Inside POST method');
+     //           res.send({
+     //                message: 'Trainee created',
+     //                data: {
+     //                          name: 'trainee1',
+     //                          address: 'noida'
+     //                     }
+     //           });
+     //      } catch (err) {
+     //           console.log('inside err');
+     //      }
+     // }
 
      update(req: Request, res: Response, next: NextFunction) {
           try {
@@ -150,8 +158,7 @@ class TraineeController {
                res.send({
                     message: 'Trainee updated',
                     data: {
-                              name: 'trainee2',
-                              address: 'pune'
+                              Details: req.body
                          }
                });
           } catch (err) {
@@ -159,20 +166,20 @@ class TraineeController {
           }
      }
 
-     delete(req: Request, res: Response, next: NextFunction) {
-          try {
-               console.log('Inside DELETE method');
-               res.send({
-                    message: 'Trainee deleted',
-                    data: {
-                              name: 'trainee1',
-                              address: 'noida'
-                         }
-               });
-          } catch (err) {
-               console.log('inside err');
-          }
-     }
+     // delete(req: Request, res: Response, next: NextFunction) {
+     //      try {
+     //           console.log('Inside DELETE method');
+     //           res.send({
+     //                message: 'Trainee deleted',
+     //                data: {
+     //                          name: 'trainee1',
+     //                          address: 'noida'
+     //                     }
+     //           });
+     //      } catch (err) {
+     //           console.log('inside err');
+     //      }
+     // }
 
      deleterec(req: Request, res: Response, next: NextFunction) {
           try {

@@ -1,19 +1,32 @@
 const config = {
-     create: {
-          name: {
-               required: true,
-               regex: /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g,
-               in: ['body'],
-               errorMessage: 'Name is required',
-               }
-          },
-
           Newcreate: {
                createdBy: {
                     required: true,
                     string: true,
                     in: ['body'],
+                    errorMessage: 'createdBy is required',
+                    },
+
+               name: {
+                    required: true,
+                    in: ['body'],
                     errorMessage: 'Name is required',
+                    },
+               role: {
+                    required: true,
+                    in: ['body'],
+                    errorMessage: 'Role is required',
+                    },
+               email: {
+                    required: true,
+                    regex: /^[a-zA-Z0-9+_.-]+@+[a-zA-Z0-9+_.-]+.+[a-zA-Z0-9+_.-]+$/,
+                    in: ['body'],
+                    errorMessage: 'email is required',
+                    },
+               password: {
+                    required: true,
+                    in: ['body'],
+                    errorMessage: 'Password is required',
                     }
                },
 
@@ -33,10 +46,16 @@ const config = {
           },
 
           post: {
-               role: {
+               name: {
                     required: true,
                     in: ['body'],
-                    errorMessage: 'Role is required',
+                    errorMessage: 'name is required',
+                    },
+               email: {
+                    required: true,
+                    regex: /^[a-zA-Z0-9+_.-]+@+[a-zA-Z0-9+_.-]+.+[a-zA-Z0-9+_.-]+$/,
+                    in: ['body'],
+                    errorMessage: 'email is required',
                     }
           },
 

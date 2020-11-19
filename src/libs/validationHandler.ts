@@ -69,9 +69,10 @@ export default function(config) {
                     if (valKey.regex) {
                          const reg = valKey.regex;
                          const testVal = req[reqLocation][element];
-                         console.log(reg);
-                         console.log(reg.test(testVal));
-                         if (!reg.test(testVal)) {
+                         // console.log(reg);
+                         console.log(testVal);
+                         console.log('regex test result', reg.test(testVal));
+                         if (reg.test(testVal) === false) {
                               console.log('--------regex', element);
                               ErrorArr.push(eror = {
                                    key: element,
@@ -95,7 +96,7 @@ export default function(config) {
                     }
                     // console.log(ErrorArr);
                });
-          console.log('--------',ErrorArr);
+          console.log('Erron array--------',ErrorArr);
           if (ErrorArr.length !== 0) {
                res.send(ErrorArr);
           }
