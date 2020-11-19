@@ -17,7 +17,7 @@ const UserRouter =  express.Router();
 //      .delete(authMiddilware('getUsers', 'read'), validationHandler(validation.delete), UserController.delete);
 
 UserRouter.route('/login')
-     .post(validationHandler(validation.create), UserController.login);
+     .post(validationHandler(validation.login), UserController.login);
 
 UserRouter.route('/me')
      .get(validationHandler(validation.get), authMiddilware('getUsers', 'read'), UserController.me);

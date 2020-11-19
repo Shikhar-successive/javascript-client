@@ -16,43 +16,38 @@ class TraineeController {
           }
      }
 
-     // get(req: Request, res: Response, next: NextFunction) {
-     //      try {
-     //           console.log('Inside GET method');
-     //           res.send({
-     //                message: 'GenerateID fetched',
-     //                data: [
-     //                     {
-
-     //                     }
-     //                ]
-     //           });
-     //      } catch (err) {
-     //           console.log('inside err');
-     //      }
-     // }
-
      async getAll(req: Request, res: Response, next: NextFunction) {
           try {
                console.log('Inside getall method');
                const userRepository: UserRepository = new UserRepository();
-               await userRepository.getAll({}, (err, data) => {
-                    if (err) {
-                         console.log(err);
+               const skip = parseInt(req.query.skip.toString(), 10);
+               const limit = parseInt(req.query.limit.toString(), 10);
+               if (req.query.sortby.toString() === ''
+                    || req.query.sortby === 'name'
+                    || req.query.sortby === 'email') {
+                         const sort = req.query.sortby;
+                         const data = await userRepository.getAll({}, skip, limit, sort);
+                              console.log(data);
+                                   res.send({
+                                        message: 'Records fetched',
+                                        data: [
+                                             {
+                                             Total_Records: data.length,
+                                             Records: data
+                                             }
+                                        ]
+                                   });
                     }
                     else {
-                         console.log(data);
                          res.send({
-                              message: 'Records fetched',
-                              data: [
+                              Error: 'Invalid SortBy',
+                              Message: [
                                    {
-                                       Total_Records: data.length,
-                                       Records: data
+                                   SortBy: 'Only applicable on email and name'
                                    }
                               ]
                          });
                     }
-               });
           } catch (err) {
                console.log('inside err');
           }
@@ -134,21 +129,6 @@ class TraineeController {
           }
      }
 
-     // post(req: Request, res: Response, next: NextFunction) {
-     //      try {
-     //           console.log('Inside POST method');
-     //           res.send({
-     //                message: 'Trainee created',
-     //                data: {
-     //                          name: 'trainee1',
-     //                          address: 'noida'
-     //                     }
-     //           });
-     //      } catch (err) {
-     //           console.log('inside err');
-     //      }
-     // }
-
      update(req: Request, res: Response, next: NextFunction) {
           try {
                console.log('Inside find method');
@@ -165,21 +145,6 @@ class TraineeController {
                console.log('inside err');
           }
      }
-
-     // delete(req: Request, res: Response, next: NextFunction) {
-     //      try {
-     //           console.log('Inside DELETE method');
-     //           res.send({
-     //                message: 'Trainee deleted',
-     //                data: {
-     //                          name: 'trainee1',
-     //                          address: 'noida'
-     //                     }
-     //           });
-     //      } catch (err) {
-     //           console.log('inside err');
-     //      }
-     // }
 
      deleterec(req: Request, res: Response, next: NextFunction) {
           try {
