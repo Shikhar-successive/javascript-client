@@ -26,7 +26,7 @@ export default class VersioningRepository <D extends mongoose.Document, M extend
      }
 
      public VerCount(query: any): Query<number> {
-          const finalQuery = {deleteAt: null, ...query};
+          const finalQuery = {deleteAt: {$exists: false}, deletedBy: {$exists: false}, ...query};
           return this.model.countDocuments(finalQuery);
      }
 
@@ -36,7 +36,7 @@ export default class VersioningRepository <D extends mongoose.Document, M extend
      }
 
      public findOne(query: any, options: any = {}): DocumentQuery<D, D> {
-          const finalQuery = { deleteAt: null, ...query};
+          const finalQuery = { deleteAt: {$exists: false}, deletedBy: {$exists: false}, ...query};
           return this.model.findOne(finalQuery, options);
      }
 
