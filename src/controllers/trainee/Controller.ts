@@ -32,7 +32,8 @@ class TraineeController {
                                         message: 'Records fetched',
                                         data: [
                                              {
-                                             Total_Records: data.length,
+                                             Total_Records: await userRepository.VerCount({}),
+                                             Showing_Records: data.length,
                                              Records: data
                                              }
                                         ]
@@ -86,6 +87,7 @@ class TraineeController {
                     }
                     else {
                          req.body.password = userPwd;
+                    }
                          const userRepository: UserRepository = new UserRepository();
                          userRepository.createX(req.body );
                          console.log('Inside creteuser method');
@@ -97,7 +99,6 @@ class TraineeController {
                                    }
                               ]
                          });
-                    }
                });
           } catch (err) {
                console.log('inside err');
@@ -129,18 +130,40 @@ class TraineeController {
           }
      }
 
-     update(req: Request, res: Response, next: NextFunction) {
+     async update(req: Request, res: Response, next: NextFunction) {
           try {
                console.log('Inside find method');
-               const userRepository: UserRepository = new UserRepository();
-               userRepository.update(req.body);
-               console.log('Inside UPDATE method');
-               res.send({
-                    message: 'Trainee updated',
-                    data: {
-                              Details: req.body
+               if (req.body.password) {
+                    await bcrypt.hash(req.body.password, 5 , (error, userPwd) => {
+                         if (error) {
+                              console.log('Password Hash error');
                          }
-               });
+                         else {
+                              req.body.password = userPwd;
+                         }
+                    });
+               }
+               const userRepository: UserRepository = new UserRepository();
+               const prevRec = await userRepository.update(req.body);
+               console.log(prevRec);
+               if (prevRec === null) {
+                    res.send({
+                         message: 'Unable to update record',
+                         Error: 'Cannot find record to update',
+                         data: {
+                              originalId: req.body.originalId
+                         }
+                    });
+               }
+               else {
+                    console.log('Inside UPDATE method');
+                    res.send({
+                         message: 'Trainee updated',
+                         data: {
+                                   Details: req.body
+                              }
+                    });
+               }
           } catch (err) {
                console.log('inside err');
           }
