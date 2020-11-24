@@ -76,11 +76,25 @@ const config = {
                },
                sortby: {
                     required: false,
-                    default: '',
+                    default: 'createdAt',
                     string: true,
                     in: ['query'],
                     errorMessage: 'sortby is invalid',
                },
+               order: {
+                    required: false,
+                    default: -1,
+                    number: true,
+                    in: ['query'],
+                    errorMessage: 'order is invalid',
+               },
+               search: {
+                    required: false,
+                    default: '',
+                    string: true,
+                    in: ['query'],
+                    errorMessage: 'search is invalid',
+               }
                },
 
 

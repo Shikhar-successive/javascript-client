@@ -44,9 +44,9 @@ class UserController {
                                              console.log(docs);
                                              const token = jwt.sign({ docs }, config.SECRET_KEY, {expiresIn: '15m'});
                                              res.send({
+                                                  status: 'ok',
+                                                  Message: 'Authorization Token',
                                                   Data: token,
-                                                  Message: 'Login Successfull',
-                                                  status: 200
                                              });
                                         }
                                         else {
@@ -70,7 +70,11 @@ class UserController {
           const user = res.locals.val;
           console.log('-------------------------', user);
           res.send({
-                data: user
+               status: 'ok',
+               message: 'me',
+               data: {
+                    user
+               }
           });
      }
 

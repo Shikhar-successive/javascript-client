@@ -1,10 +1,16 @@
 import * as experss from 'express';
 import * as bodyParser from 'body-parser';
+// import swaggerUi from 'swagger-ui-express';
+// import swaggerDocument from '../swagger.json'
 
 import { notFoundHandeler, errorHandler } from './libs/routes';
 import routes from './router';
 import Database from './libs/Database';
 import IConfig from './config/IConfig';
+// tslint:disable-next-line: one-variable-per-declaration
+const swaggerUi = require('swagger-ui-express'),
+swaggerDocument = require('../swagger.json');
+
  class Server {
      app;
      constructor(private config: IConfig) {
@@ -24,6 +30,8 @@ import IConfig from './config/IConfig';
           });
 
           this.app.use('/api', routes);
+
+          this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
           this.app.use(notFoundHandeler);
 

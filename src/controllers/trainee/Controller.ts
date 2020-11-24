@@ -22,32 +22,70 @@ class TraineeController {
                const userRepository: UserRepository = new UserRepository();
                const skip = parseInt(req.query.skip.toString(), 10);
                const limit = parseInt(req.query.limit.toString(), 10);
-               if (req.query.sortby.toString() === ''
+               if (req.query.sortby.toString() === 'createdAt'
                     || req.query.sortby === 'name'
                     || req.query.sortby === 'email') {
                          const sort = req.query.sortby;
-                         const data = await userRepository.getAll({}, skip, limit, sort);
+                         const order = req.query.order;
+                         const search = req.query.search.toString();
+                         if (/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g.test(search) === true) {
+                              const data = await userRepository.getAll({name: search}, {skip, limit}, {sort, order});
                               console.log(data);
                                    res.send({
-                                        message: 'Records fetched',
-                                        data: [
-                                             {
-                                             Total_Records: await userRepository.VerCount({}),
-                                             Showing_Records: data.length,
-                                             Records: data
-                                             }
-                                        ]
-                                   });
-                    }
-                    else {
-                         res.send({
-                              Error: 'Invalid SortBy',
-                              Message: [
-                                   {
-                                   SortBy: 'Only applicable on email and name'
+                                        status: 'ok',
+                                        message: 'Successfully fetched Trainees',
+                                        data : {
+                                             count: data.length,
+                                             records: [
+                                                  {
+                                                   data
+                                                  }
+                                             ]
                                    }
-                              ]
-                         });
+                                   });
+                         }
+                         else if (/^[a-zA-Z0-9+_.-]+@+[a-zA-Z0-9+_.-]+.+[a-zA-Z0-9+_.-]+$/.test(search) === true) {
+                              const data = await userRepository.getAll({email: search}, {skip, limit}, {sort, order});
+                              console.log(data);
+                                   res.send({
+                                        status: 'ok',
+                                        message: 'Successfully fetched Trainees',
+                                        data: {
+                                             count: data.length,
+                                             records: [
+                                                  {
+                                                   data
+                                                  }
+                                             ]
+                                   }
+                                   });
+                         }
+                         else {
+                         const data = await userRepository.getAll({}, {skip, limit}, {sort, order});
+                              console.log(data);
+                                   res.send({
+                                        status: 'ok',
+                                        message: 'Successfully fetched Trainees',
+                                        data: {
+                                             count: data.length,
+                                             records: [
+                                                  {
+                                                   data
+                                                  }
+                                             ]
+                                   }
+                                   });
+                              }
+                    }
+               else {
+                    res.send({
+                         Error: 'Invalid SortBy',
+                         Message: [
+                              {
+                              SortBy: 'Only applicable on email and name'
+                              }
+                         ]
+                    });
                     }
           } catch (err) {
                console.log('inside err');
@@ -92,12 +130,12 @@ class TraineeController {
                          userRepository.createX(req.body );
                          console.log('Inside creteuser method');
                          res.send({
-                              message: 'Trainee created',
-                              data: [
+                              status: 'ok',
+                              message: 'Trainee Created Successfully',
+                              data:
                                    {
-                                        data: req.body
+                                        data: req.body,
                                    }
-                              ]
                          });
                });
           } catch (err) {
@@ -158,7 +196,8 @@ class TraineeController {
                else {
                     console.log('Inside UPDATE method');
                     res.send({
-                         message: 'Trainee updated',
+                         status: 'ok',
+                         message: 'Trainee Updated Successfully',
                          data: {
                                    Details: req.body
                               }
@@ -176,10 +215,10 @@ class TraineeController {
 
                console.log('Inside DELETE method');
                res.send({
-                    message: 'Trainee deleted',
+                    status: 'ok',
+                    message: 'Trainee Deleted Successfully',
                     data: {
-                              name: 'trainee1',
-                              address: 'noida'
+                              id: req.body.id
                          }
                });
           } catch (err) {

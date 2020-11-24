@@ -30,9 +30,21 @@ export default class VersioningRepository <D extends mongoose.Document, M extend
           return this.model.countDocuments(finalQuery);
      }
 
-     public getAll(query: any, skip: any = {}, limit: any = {}, sort: any = {}): DocumentQuery<D[], D> {
-          const finalQuery = { deletedAt: null, ...query };
-          return this.model.find(finalQuery).skip(skip).limit(limit).sort(sort);
+     public getAll(query: any, projection: any = {}, options: any = {}): DocumentQuery<D[], D> {
+          console.log('---------projection skip >>', projection.skip);
+          console.log('---------projection limit >>', projection.limit);
+          console.log('---------Option sort >>', options.sort);
+          console.log('---------Option order >>', options.order);
+          if (options.sort === 'createdAt') {
+               const defaultSort = {[options.sort]: -1};
+               const finalQuery = { deleteAt: {$exists: false}, deletedBy: {$exists: false}, ...query };
+               return this.model.find(finalQuery).skip(projection.skip).limit(projection.limit).sort(defaultSort);
+          }
+          else {
+               const customSort = {[options.sort]: options.order};
+               const finalQuery = { deleteAt: {$exists: false}, deletedBy: {$exists: false}, ...query };
+               return this.model.find(finalQuery).skip(projection.skip).limit(projection.limit).sort(customSort);
+          }
      }
 
      public findOne(query: any, options: any = {}): DocumentQuery<D, D> {
@@ -57,22 +69,6 @@ export default class VersioningRepository <D extends mongoose.Document, M extend
                          return this.deleteRecordAt(id, remover);
                     }
      }
-
-
-     // public updatedRecordAt(id: string, updater: string): any {
-          // const findId: any = {originalId : id,
-          //                     updatedAt: {$exists: false},
-          //                     updatedBy: {$exists: false},
-          //                     deletedAt : {$exists: false},
-          //                     deletedBy : {$exists: false}};
-
-          // const updateRec: any = {updatedAt: Date.now(),
-          //                         updatedBy: updater,
-          //                         deletedAt: Date.now(),
-          //                         deletedBy: updater};
-          // return this.model.update( findId , updateRec );
-     // }
-
 
      public async update(data: any): Promise<D> {
           const prev = await this.findOne({ originalId: data.originalId,
