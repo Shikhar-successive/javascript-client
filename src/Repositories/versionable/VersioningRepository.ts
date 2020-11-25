@@ -64,9 +64,12 @@ export default class VersioningRepository <D extends mongoose.Document, M extend
      }
 
      public async delete(id: string, remover: string): Promise<D> {
-          const data = await this.findOne({originalId: id, deletedAt: null});
+          const data = await this.findOne({originalId: id, deletedAt: {$exists: false}, deletedBy: {$exists: false}});
                     if (data) {
                          return this.deleteRecordAt(id, remover);
+                    }
+                    else {
+                         return null;
                     }
      }
 

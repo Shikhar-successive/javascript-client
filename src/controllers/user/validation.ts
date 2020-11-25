@@ -13,7 +13,7 @@ const config = {
                required: true,
                regex: /^[a-zA-Z0-9+_.-]+@+[a-zA-Z0-9+_.-]+.+[a-zA-Z0-9+_.-]+$/,
                in: ['body'],
-               errorMessage: 'Name is required',
+               errorMessage: 'Email is required',
                }
           },
 

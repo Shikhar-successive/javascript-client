@@ -28,10 +28,10 @@ traineeRouter.route('/create')
 traineeRouter.route('/search')
      .get(authMiddilware('getUsers', 'read'), validationHandler(validation.post), TraineeController.search);
 
-traineeRouter.route('/del')
-     .post(authMiddilware('getUsers', 'read'), validationHandler(validation.delete), TraineeController.deleterec);
+traineeRouter.route('/delete')
+     .delete(authMiddilware('getUsers', 'read'), validationHandler(validation.delete), TraineeController.deleterec);
 
 traineeRouter.route('/update')
-     .post(authMiddilware('getUsers', 'read'), validationHandler(validation.update), TraineeController.update);
+     .put(authMiddilware('getUsers', 'read'), validationHandler(validation.update), TraineeController.update);
 
 export default traineeRouter;

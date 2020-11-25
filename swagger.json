@@ -11,8 +11,177 @@
           },
      "host": "localhost:9000",
      "basePath": "/",
-     "tags": [{"name": "Users","description": "API for users in the system"}],
+     "tags": [{"name": "Users","description": "API for users in the system"}, 
+               {"name": "Trainee","description": "API for Trainees in the system"}],
      "schemes": ["http"],
      "consumes": ["application/json"],
-     "produces": ["application/json"]
+     "produces": ["application/json"],
+     "securityDefinitions": { 
+          "bearerAuth": {"type": "apiKey",
+                          "in": "header",
+                          "name": "Authorization",
+                          "description": "Enter your bearer token"}}, 
+     "paths": {
+          "/api/trainee/getall": {
+               "get": {
+                    "security": [
+                         {"bearerAuth": [] }
+                    ],
+                    "parameters": [
+                         {"name": "skip",
+                          "in": "query",
+                          "required": false,
+                          "type": "number"},
+
+                         {"name": "limit",
+                          "in": "query",
+                          "required": false,
+                          "type": "number"},
+                         
+                         {"name": "sortby",
+                          "in": "query",
+                          "required": false,
+                          "type": "string"},
+
+                          {"name": "order",
+                          "in": "query",
+                          "required": false,
+                          "type": "number"},
+
+                          {"name": "search",
+                          "in": "query",
+                          "required": false,
+                          "type": "string"}
+                          ],
+                    "tags": [
+                         "Trainee"
+                    ],
+                    "summary": "Get user details",
+                    "responses": {
+                         "200": {
+                              "description": "ok"
+                         }
+                    }
+               }
+          },
+          "/api/trainee/create": {
+               "post": {
+                    "tags": [
+                         "Trainee"
+                    ],
+                    "security": [
+                         {"bearerAuth": [] }
+                    ],
+                    "parameters": [
+                         {"name": "createdBy",
+                          "in": "body",
+                          "required": true,
+                          "schema": {
+                              "type":"string"
+                          }},
+                          {"name": "name",
+                          "in": "body",
+                          "required": true,
+                          "schema": {
+                              "type":"string"
+                          }},
+                         {"name": "role",
+                          "in": "body",
+                          "required": true,
+                          "schema": {
+                              "type":"string"
+                         }},
+                         {"name": "email",
+                          "in": "body",
+                          "required": true,
+                          "schema": {
+                              "type":"string"
+                         }},
+                         {"name": "password",
+                          "in": "body",
+                          "required": true,
+                          "schema": {
+                              "type":"string"
+                         }}
+                         ],
+                    "summary": "Get user details",
+                    "responses": {
+                         "200": {
+                              "description": "ok"
+                         }
+                    }
+               }
+          },
+          "/api/trainee/update": {
+               "put": {
+                    "tags": [
+                         "Trainee"
+                    ],
+                    "summary": "Get user details",
+                    "responses": {
+                         "200": {
+                              "description": "ok"
+                         }
+                    }
+               }
+          },
+          "/api/trainee/delete": {
+               "delete": {
+                    "tags": [
+                         "Trainee"
+                    ],
+                    "summary": "Get user details",
+                    "responses": {
+                         "200": {
+                              "description": "ok"
+                         }
+                    }
+               }
+          },
+          "/api/user/login": {
+               "post": {
+                    "tags": [
+                         "Users"
+                    ],
+                    "summary": "Login as user",
+                    "parameters": [
+                         {"name": "Password",
+                          "in": "body",
+                          "schema": {
+                               "type":"object"
+                          },
+                          "required": true},
+                          {"name": "email",
+                              "in": "body",
+                              "schema": {
+                                   "type":"object"
+                              },
+                              "required": true} ],
+                    "responses": {
+                         "200": {
+                              "description": "ok"
+                         }
+                    }
+               }
+          },
+          "/api/user/me": {
+               "get": {
+                    "security": [
+                         {"bearerAuth": [] }
+                    ],
+                    "tags": [
+                         "Users"
+                    ],
+                    "summary": "Get user details",
+                    "responses": {
+                         "200": {
+                              "description": "ok"
+                         }
+                    }
+               }
+          }
+          
+          
+     }
+
 }

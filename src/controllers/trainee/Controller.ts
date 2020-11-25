@@ -31,6 +31,7 @@ class TraineeController {
                          if (/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g.test(search) === true) {
                               const data = await userRepository.getAll({name: search}, {skip, limit}, {sort, order});
                               console.log(data);
+                              if (data.length) {
                                    res.send({
                                         status: 'ok',
                                         message: 'Successfully fetched Trainees',
@@ -41,12 +42,21 @@ class TraineeController {
                                                    data
                                                   }
                                              ]
-                                   }
+                                        }
                                    });
+                              }
+                              else {
+                                   res.send({
+                                        status: 'ok',
+                                        message: 'No data Found',
+                                        search: req.query.search
+                                   });
+                              }
                          }
                          else if (/^[a-zA-Z0-9+_.-]+@+[a-zA-Z0-9+_.-]+.+[a-zA-Z0-9+_.-]+$/.test(search) === true) {
                               const data = await userRepository.getAll({email: search}, {skip, limit}, {sort, order});
                               console.log(data);
+                              if (data.length) {
                                    res.send({
                                         status: 'ok',
                                         message: 'Successfully fetched Trainees',
@@ -57,25 +67,42 @@ class TraineeController {
                                                    data
                                                   }
                                              ]
-                                   }
+                                        }
                                    });
+                              }
+                              else {
+                                   res.send({
+                                        status: 'ok',
+                                        message: 'No data Found',
+                                        search: req.query.search
+                                   });
+                              }
                          }
                          else {
                          const data = await userRepository.getAll({}, {skip, limit}, {sort, order});
                               console.log(data);
-                                   res.send({
-                                        status: 'ok',
-                                        message: 'Successfully fetched Trainees',
-                                        data: {
-                                             count: data.length,
-                                             records: [
-                                                  {
-                                                   data
+                                   if (data.length) {
+                                        res.send({
+                                             status: 'ok',
+                                             message: 'Successfully fetched Trainees',
+                                             data: {
+                                                  count: data.length,
+                                                  records: [
+                                                            {
+                                                                  data
+                                                            }
+                                                       ]
                                                   }
-                                             ]
+                                             });
+                                        }
+                                   else {
+                                        res.send({
+                                             status: 'ok',
+                                             message: 'No data Found',
+                                             data: req.query
+                                        });
                                    }
-                                   });
-                              }
+                         }
                     }
                else {
                     res.send({
@@ -208,19 +235,30 @@ class TraineeController {
           }
      }
 
-     deleterec(req: Request, res: Response, next: NextFunction) {
+     async deleterec(req: Request, res: Response, next: NextFunction) {
           try {
-               const userRepository: UserRepository = new UserRepository();
-               userRepository.delete(req.body.id, req.body.deletedBy);
-
                console.log('Inside DELETE method');
-               res.send({
-                    status: 'ok',
-                    message: 'Trainee Deleted Successfully',
-                    data: {
-                              id: req.body.id
+               const userRepository: UserRepository = new UserRepository();
+               const data = await userRepository.delete(req.body.id, req.body.deletedBy);
+               console.log(data);
+               if (data === null) {
+                    res.send({
+                         message: 'Unable to Delete record',
+                         Error: 'Cannot find record to delete',
+                         data: {
+                              Id: req.body.id
                          }
-               });
+                    });
+               }
+               else {
+                    res.send({
+                         status: 'ok',
+                         message: 'Trainee Deleted Successfully',
+                         data: {
+                                   id: req.body.id
+                              }
+                    });
+               }
           } catch (err) {
                console.log('inside err');
           }
