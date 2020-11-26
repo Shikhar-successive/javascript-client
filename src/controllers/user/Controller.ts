@@ -26,7 +26,8 @@ class UserController {
                          }
                     else if (docs === null) {
                          console.log(docs);
-                         res.send({
+                         res.status(404).send({
+                              status: 'Not found',
                               message: 'Invalid User',
                               data: {
                                         name: req.body,
@@ -43,17 +44,18 @@ class UserController {
                                         else if (data) {
                                              console.log(docs);
                                              const token = jwt.sign({ docs }, config.SECRET_KEY, {expiresIn: '15m'});
-                                             res.send({
+                                             res.status(200).send({
                                                   status: 'ok',
                                                   Message: 'Authorization Token',
                                                   Data: token,
                                              });
                                         }
                                         else {
-                                             res.send({
+                                             res.status(401).send({
+                                                  status: 'Unauthorized',
                                                   message: 'Invalid Password',
                                                   data: {
-                                                            name: req.body.password,
+                                                            password: req.body.password,
                                                        }
                                                   });
                                         }
@@ -69,7 +71,7 @@ class UserController {
      me(req: Request, res: Response, next: NextFunction) {
           const user = res.locals.val;
           console.log('-------------------------', user);
-          res.send({
+          res.status(200).send({
                status: 'ok',
                message: 'me',
                data: {

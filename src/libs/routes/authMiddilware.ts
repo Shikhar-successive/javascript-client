@@ -27,7 +27,7 @@ export default(module, permissionType) => (req: Request, res: Response, next: Ne
                }
 
           } catch (err) {
-               res.send({
+               res.status(401).send({
                     error: err,
                     message: 'Token Expired'
                });

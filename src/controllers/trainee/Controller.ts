@@ -32,7 +32,7 @@ class TraineeController {
                               const data = await userRepository.getAll({name: search}, {skip, limit}, {sort, order});
                               console.log(data);
                               if (data.length) {
-                                   res.send({
+                                   res.status(200).send({
                                         status: 'ok',
                                         message: 'Successfully fetched Trainees',
                                         data : {
@@ -46,8 +46,8 @@ class TraineeController {
                                    });
                               }
                               else {
-                                   res.send({
-                                        status: 'ok',
+                                   res.status(404).send({
+                                        status: 'Not found',
                                         message: 'No data Found',
                                         search: req.query.search
                                    });
@@ -57,7 +57,7 @@ class TraineeController {
                               const data = await userRepository.getAll({email: search}, {skip, limit}, {sort, order});
                               console.log(data);
                               if (data.length) {
-                                   res.send({
+                                   res.status(200).send({
                                         status: 'ok',
                                         message: 'Successfully fetched Trainees',
                                         data: {
@@ -71,8 +71,8 @@ class TraineeController {
                                    });
                               }
                               else {
-                                   res.send({
-                                        status: 'ok',
+                                   res.status(404).send({
+                                        status: 'Not found',
                                         message: 'No data Found',
                                         search: req.query.search
                                    });
@@ -82,7 +82,7 @@ class TraineeController {
                          const data = await userRepository.getAll({}, {skip, limit}, {sort, order});
                               console.log(data);
                                    if (data.length) {
-                                        res.send({
+                                        res.status(200).send({
                                              status: 'ok',
                                              message: 'Successfully fetched Trainees',
                                              data: {
@@ -97,7 +97,7 @@ class TraineeController {
                                         }
                                    else {
                                         res.send({
-                                             status: 'ok',
+                                             status: 'Not found',
                                              message: 'No data Found',
                                              data: req.query
                                         });
@@ -105,9 +105,10 @@ class TraineeController {
                          }
                     }
                else {
-                    res.send({
-                         Error: 'Invalid SortBy',
-                         Message: [
+                    res.status(400).send({
+                         status: 'Bad request',
+                         message: 'Invalid SortBy',
+                         data: [
                               {
                               SortBy: 'Only applicable on email and name'
                               }
@@ -156,7 +157,7 @@ class TraineeController {
                          const userRepository: UserRepository = new UserRepository();
                          userRepository.createX(req.body );
                          console.log('Inside creteuser method');
-                         res.send({
+                         res.status(200).send({
                               status: 'ok',
                               message: 'Trainee Created Successfully',
                               data:
@@ -212,9 +213,9 @@ class TraineeController {
                const prevRec = await userRepository.update(req.body);
                console.log(prevRec);
                if (prevRec === null) {
-                    res.send({
-                         message: 'Unable to update record',
-                         Error: 'Cannot find record to update',
+                    res.status(404).send({
+                         status: 'Not found',
+                         message: 'Cannot find record to update',
                          data: {
                               originalId: req.body.originalId
                          }
@@ -222,7 +223,7 @@ class TraineeController {
                }
                else {
                     console.log('Inside UPDATE method');
-                    res.send({
+                    res.status(200).send({
                          status: 'ok',
                          message: 'Trainee Updated Successfully',
                          data: {
@@ -242,16 +243,16 @@ class TraineeController {
                const data = await userRepository.delete(req.body.id, req.body.deletedBy);
                console.log(data);
                if (data === null) {
-                    res.send({
-                         message: 'Unable to Delete record',
-                         Error: 'Cannot find record to delete',
+                    res.status(404).send({
+                         status: 'Not found',
+                         message: 'Cannot find record to delete',
                          data: {
                               Id: req.body.id
                          }
                     });
                }
                else {
-                    res.send({
+                    res.status(200).send({
                          status: 'ok',
                          message: 'Trainee Deleted Successfully',
                          data: {
