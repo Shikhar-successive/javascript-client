@@ -20,14 +20,14 @@ export default(module, permissionType) => (req: Request, res: Response, next: Ne
                     next();
                }
                else {
-                     res.send({
-                         error: 403,
-                         message: 'Unauthorized'
+                     res.status(401).send({
+                         status: 'Unauthorized',
+                         message: 'User is Unauthorized'
                     });
                }
 
           } catch (err) {
-               res.status(401).send({
+               res.status(404).send({
                     error: err,
                     message: 'Token Expired'
                });

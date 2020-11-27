@@ -186,6 +186,21 @@
                                         }
                                    }
                               }
+                         },
+                         "403": {
+                              "description": "Unauthorized",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Unauthorized"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "User is Unauthorized"
+                                        }
+                                   }
+                              }
                          }
                     }
                }
@@ -232,7 +247,7 @@
                     "responses": {
                          "200": {
                               "description": "ok",
-                              "schema":{
+                              "schema": {
                                    "properties": {
                                         "status": {
                                              "type": "string",
@@ -246,15 +261,15 @@
                                              "properties": {
                                                   "name": {
                                                        "type": "string",
-                                                       "example":"Rohan"
+                                                       "example": "Rohan"
                                                   },
                                                   "role": {
                                                        "type": "string",
-                                                       "example":"Trainee"
+                                                       "example": "Trainee"
                                                   },
                                                   "email": {
                                                        "type": "string",
-                                                       "example":"Rohan@successive.tech"
+                                                       "example": "Rohan@successive.tech"
                                                   },
                                                   "password": {
                                                        "type": "string",
@@ -262,9 +277,43 @@
                                                   },
                                                   "createdBy": {
                                                        "type": "string",
-                                                       "example":"Admin"
+                                                       "example": "Admin"
                                                   }
                                              }
+                                        }
+                                   }
+                              }
+                         },
+                         "403": {
+                              "description": "Unauthorized",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Unauthorized"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "User is Unauthorized"
+                                        }
+                                   }
+                              }
+                         },
+                         "400": {
+                              "description": "Bad request",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Bad request"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Key not provided"
+                                        },
+                                        "data": {
+                                             "type": "string",
+                                             "example": "createdBy"
                                         }
                                    }
                               }
@@ -308,16 +357,19 @@
                                         "updatedBy": {
                                              "type": "string"
                                         }
-                                   }
-                              },
-                              "required": true
+                                   },
+                                   "required": [
+                                        "originalId",
+                                        "updatedBy"
+                                   ]
+                              }
                          }
                     ],
                     "summary": "Get user details",
                     "responses": {
                          "200": {
                               "description": "ok",
-                              "schema":{
+                              "schema": {
                                    "properties": {
                                         "status": {
                                              "type": "string",
@@ -331,19 +383,19 @@
                                              "properties": {
                                                   "originalId": {
                                                        "type": "string",
-                                                       "example":"5fb2b21498974a2fdcb36f8e"
+                                                       "example": "5fb2b21498974a2fdcb36f8e"
                                                   },
                                                   "name": {
                                                        "type": "string",
-                                                       "example":"Rohan"
+                                                       "example": "Rohan"
                                                   },
                                                   "role": {
                                                        "type": "string",
-                                                       "example":"Trainee"
+                                                       "example": "Trainee"
                                                   },
                                                   "email": {
                                                        "type": "string",
-                                                       "example":"Rohan@successive.tech"
+                                                       "example": "Rohan@successive.tech"
                                                   },
                                                   "password": {
                                                        "type": "string",
@@ -351,7 +403,7 @@
                                                   },
                                                   "updatedBy": {
                                                        "type": "string",
-                                                       "example":"Admin"
+                                                       "example": "Admin"
                                                   }
                                              }
                                         }
@@ -360,7 +412,7 @@
                          },
                          "404": {
                               "description": "Not found",
-                              "schema":{
+                              "schema": {
                                    "properties": {
                                         "status": {
                                              "type": "string",
@@ -374,9 +426,43 @@
                                              "properties": {
                                                   "originalId": {
                                                        "type": "string",
-                                                       "example":"5fb2b21498974a2fdcb36f8e"
+                                                       "example": "5fb2b21498974a2fdcb36f8e"
                                                   }
                                              }
+                                        }
+                                   }
+                              }
+                         },
+                         "403": {
+                              "description": "Unauthorized",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Unauthorized"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "User is Unauthorized"
+                                        }
+                                   }
+                              }
+                         },
+                         "400": {
+                              "description": "Bad request",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Bad request"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Key not provided"
+                                        },
+                                        "data": {
+                                             "type": "string",
+                                             "example": "updatedBy"
                                         }
                                    }
                               }
@@ -416,7 +502,7 @@
                     "responses": {
                          "200": {
                               "description": "ok",
-                              "schema":{
+                              "schema": {
                                    "properties": {
                                         "status": {
                                              "type": "string",
@@ -430,7 +516,7 @@
                                              "properties": {
                                                   "id": {
                                                        "type": "string",
-                                                       "example":"5fb2b21498974a2fdcb36f8e"
+                                                       "example": "5fb2b21498974a2fdcb36f8e"
                                                   }
                                              }
                                         }
@@ -439,7 +525,7 @@
                          },
                          "404": {
                               "description": "Not Found",
-                              "schema":{
+                              "schema": {
                                    "properties": {
                                         "status": {
                                              "type": "string",
@@ -453,14 +539,47 @@
                                              "properties": {
                                                   "id": {
                                                        "type": "string",
-                                                       "example":"5fb2b21498974a2fdcb36f8e"
+                                                       "example": "5fb2b21498974a2fdcb36f8e"
                                                   }
                                              }
                                         }
                                    }
                               }
+                         },
+                         "403": {
+                              "description": "Unauthorized",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Unauthorized"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "User is Unauthorized"
+                                        }
+                                   }
+                              }
+                         },
+                         "400": {
+                              "description": "Bad request",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Bad request"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Key not provided"
+                                        },
+                                        "data": {
+                                             "type": "string",
+                                             "example": "deletedBy"
+                                        }
+                                   }
+                              }
                          }
-                         
                     }
                }
           },

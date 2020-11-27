@@ -10,11 +10,11 @@ export default () => {
      .then(res => {
           if (res === 0) {
                console.log('Data seeding in progress');
-               bcrypt.hash(config.PASSWORD, 5, (err,data) => {
-                    if (err){
+               bcrypt.hash(config.PASSWORD, 5, (err, data) => {
+                    if (err) {
                          console.log(err);
                     }
-                    else{
+                    else {
                          userRepository.createX({ name: 'Head Trainer',
                                                   role: 'head-trainer',
                                                   email: 'headtrainer@successive.tech',
