@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import config from '../../config/configuration';
-import { userModel } from '../../Repositories/User/UserModel';
+import UserRepository from '../../Repositories/User/UserRepository';
 import { Request, Response, NextFunction } from 'express';
 import * as bcrypt from 'bcrypt';
 
@@ -19,7 +19,8 @@ class UserController {
 
      login(req: Request, res: Response, next: NextFunction) {
           try {
-               userModel.findOne({email: req.body.email}, (err, docs) => {
+               const userRepository: UserRepository = new UserRepository();
+               userRepository.findOne({email: req.body.email}, (err, docs) => {
                     if (err) {
                          console.log(err);
                          }
@@ -33,6 +34,8 @@ class UserController {
                               });
                          }
                     else if (docs !== null) {
+                         console.log(req.body.password);
+                         console.log(docs.password);
                          bcrypt.compare(req.body.password, docs.password, (error, data: boolean) => {
                                         if (error) {
                                              console.log('bcrypt compare error');
