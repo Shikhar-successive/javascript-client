@@ -1,0 +1,774 @@
+{
+     "swagger": "2.0",
+     "info": {
+          "version": "1.0.0",
+          "title": "My User Project CRUD",
+          "description": "My User Project Application API",
+          "license": {
+               "name": "MIT",
+               "url": "https://opensource.org/licenses/MIT"
+          }
+     },
+     "host": "localhost:9000",
+     "basePath": "/",
+     "tags": [
+          {
+               "name": "Users",
+               "description": "API for users in the system"
+          },
+          {
+               "name": "Trainee",
+               "description": "API for Trainees in the system"
+          }
+     ],
+     "schemes": [
+          "http"
+     ],
+     "consumes": [
+          "application/json"
+     ],
+     "produces": [
+          "application/json"
+     ],
+     "securityDefinitions": {
+          "bearerAuth": {
+               "type": "apiKey",
+               "in": "header",
+               "name": "Authorization",
+               "description": "Enter your bearer token"
+          }
+     },
+     "paths": {
+          "/api/trainee/getall": {
+               "get": {
+                    "security": [
+                         {
+                              "bearerAuth": []
+                         }
+                    ],
+                    "parameters": [
+                         {
+                              "name": "skip",
+                              "in": "query",
+                              "required": false,
+                              "type": "number"
+                         },
+                         {
+                              "name": "limit",
+                              "in": "query",
+                              "required": false,
+                              "type": "number"
+                         },
+                         {
+                              "name": "sortby",
+                              "in": "query",
+                              "required": false,
+                              "type": "string"
+                         },
+                         {
+                              "name": "order",
+                              "in": "query",
+                              "required": false,
+                              "type": "number"
+                         },
+                         {
+                              "name": "search",
+                              "in": "query",
+                              "required": false,
+                              "type": "string"
+                         }
+                    ],
+                    "tags": [
+                         "Trainee"
+                    ],
+                    "summary": "Get all trainee details",
+                    "responses": {
+                         "200": {
+                              "description": "ok",
+                              "schema": {
+                                   "type": "object",
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "ok"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Successfully fetched Trainees"
+                                        },
+                                        "data": {
+                                             "properties": {
+                                                  "count": {
+                                                       "type": "integer",
+                                                       "example": 1
+                                                  },
+                                                  "records": {
+                                                       "properties": {
+                                                            "_id": {
+                                                                 "type": "string",
+                                                                 "example": "5c6c47447740654f0915fac7"
+                                                            },
+                                                            "name": {
+                                                                 "type": "string",
+                                                                 "example": "Head Tariner"
+                                                            },
+                                                            "role": {
+                                                                 "type": "string",
+                                                                 "example": "head-traier"
+                                                            },
+                                                            "email": {
+                                                                 "type": "string",
+                                                                 "example": "headtraier@successive.tech"
+                                                            },
+                                                            "originalId": {
+                                                                 "type": "string",
+                                                                 "example": "5c6c47447740654f0915fac7"
+                                                            },
+                                                            "password": {
+                                                                 "type": "string",
+                                                                 "example": "$2b$05$oezRxiVkMy1kTIom7wOMtu2AuFsWSiEceTQSyQqrxseRk3h2yUJ8G"
+                                                            },
+                                                            "createdAt": {
+                                                                 "type": "string",
+                                                                 "example": "2020-11-16T17:08:36.254+00:00"
+                                                            }
+                                                       }
+                                                  }
+                                             }
+                                        }
+                                   }
+                              }
+                         },
+                         "404": {
+                              "description": "Not Found",
+                              "schema": {
+                                   "type": "object",
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Not found"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "No data found"
+                                        },
+                                        "data": {
+                                             "properties": {
+                                                  "email": {
+                                                       "type": "string",
+                                                       "example": "something@xyz.com"
+                                                  }
+                                             }
+                                        }
+                                   }
+                              }
+                         },
+                         "400": {
+                              "description": "Bad request",
+                              "schema": {
+                                   "type": "object",
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Bad request"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Invalid SortBy"
+                                        },
+                                        "data": {
+                                             "properties": {
+                                                  "SortBy": {
+                                                       "type": "string",
+                                                       "example": "Only applicable on 'email' and 'name'"
+                                                  }
+                                             }
+                                        }
+                                   }
+                              }
+                         },
+                         "403": {
+                              "description": "Unauthorized",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Unauthorized"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "User is Unauthorized"
+                                        }
+                                   }
+                              }
+                         }
+                    }
+               }
+          },
+          "/api/trainee/create": {
+               "post": {
+                    "tags": [
+                         "Trainee"
+                    ],
+                    "security": [
+                         {
+                              "bearerAuth": []
+                         }
+                    ],
+                    "parameters": [
+                         {
+                              "in": "body",
+                              "name": "create",
+                              "description": "Trainee to create",
+                              "schema": {
+                                   "type": "object",
+                                   "properties": {
+                                        "createdBy": {
+                                             "type": "string"
+                                        },
+                                        "name": {
+                                             "type": "string"
+                                        },
+                                        "role": {
+                                             "type": "string"
+                                        },
+                                        "email": {
+                                             "type": "string"
+                                        },
+                                        "password": {
+                                             "type": "string"
+                                        }
+                                   }
+                              },
+                              "required": true
+                         }
+                    ],
+                    "summary": "Get user details",
+                    "responses": {
+                         "200": {
+                              "description": "ok",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "ok"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Trainee Created"
+                                        },
+                                        "data": {
+                                             "properties": {
+                                                  "name": {
+                                                       "type": "string",
+                                                       "example": "Rohan"
+                                                  },
+                                                  "role": {
+                                                       "type": "string",
+                                                       "example": "Trainee"
+                                                  },
+                                                  "email": {
+                                                       "type": "string",
+                                                       "example": "Rohan@successive.tech"
+                                                  },
+                                                  "password": {
+                                                       "type": "string",
+                                                       "example": "$2b$05$oezRxiVkMy1kTIom7wOMtu2AuFsWSiEceTQSyQqrxseRk3h2yUJ8G"
+                                                  },
+                                                  "createdBy": {
+                                                       "type": "string",
+                                                       "example": "Admin"
+                                                  }
+                                             }
+                                        }
+                                   }
+                              }
+                         },
+                         "403": {
+                              "description": "Unauthorized",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Unauthorized"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "User is Unauthorized"
+                                        }
+                                   }
+                              }
+                         },
+                         "400": {
+                              "description": "Bad request",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Bad request"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Key not provided"
+                                        },
+                                        "data": {
+                                             "type": "string",
+                                             "example": "createdBy"
+                                        }
+                                   }
+                              }
+                         }
+                    }
+               }
+          },
+          "/api/trainee/update": {
+               "put": {
+                    "tags": [
+                         "Trainee"
+                    ],
+                    "security": [
+                         {
+                              "bearerAuth": []
+                         }
+                    ],
+                    "parameters": [
+                         {
+                              "in": "body",
+                              "name": "update",
+                              "description": "Trainee to created Successfully",
+                              "schema": {
+                                   "type": "object",
+                                   "properties": {
+                                        "originalId": {
+                                             "type": "string"
+                                        },
+                                        "name": {
+                                             "type": "string"
+                                        },
+                                        "role": {
+                                             "type": "string"
+                                        },
+                                        "email": {
+                                             "type": "string"
+                                        },
+                                        "password": {
+                                             "type": "string"
+                                        },
+                                        "updatedBy": {
+                                             "type": "string"
+                                        }
+                                   },
+                                   "required": [
+                                        "originalId",
+                                        "updatedBy"
+                                   ]
+                              }
+                         }
+                    ],
+                    "summary": "Get user details",
+                    "responses": {
+                         "200": {
+                              "description": "ok",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "ok"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Trainee updated Successfully"
+                                        },
+                                        "data": {
+                                             "properties": {
+                                                  "originalId": {
+                                                       "type": "string",
+                                                       "example": "5fb2b21498974a2fdcb36f8e"
+                                                  },
+                                                  "name": {
+                                                       "type": "string",
+                                                       "example": "Rohan"
+                                                  },
+                                                  "role": {
+                                                       "type": "string",
+                                                       "example": "Trainee"
+                                                  },
+                                                  "email": {
+                                                       "type": "string",
+                                                       "example": "Rohan@successive.tech"
+                                                  },
+                                                  "password": {
+                                                       "type": "string",
+                                                       "example": "$2b$05$oezRxiVkMy1kTIom7wOMtu2AuFsWSiEceTQSyQqrxseRk3h2yUJ8G"
+                                                  },
+                                                  "updatedBy": {
+                                                       "type": "string",
+                                                       "example": "Admin"
+                                                  }
+                                             }
+                                        }
+                                   }
+                              }
+                         },
+                         "404": {
+                              "description": "Not found",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Not Found"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Cannot find record to update"
+                                        },
+                                        "data": {
+                                             "properties": {
+                                                  "originalId": {
+                                                       "type": "string",
+                                                       "example": "5fb2b21498974a2fdcb36f8e"
+                                                  }
+                                             }
+                                        }
+                                   }
+                              }
+                         },
+                         "403": {
+                              "description": "Unauthorized",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Unauthorized"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "User is Unauthorized"
+                                        }
+                                   }
+                              }
+                         },
+                         "400": {
+                              "description": "Bad request",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Bad request"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Key not provided"
+                                        },
+                                        "data": {
+                                             "type": "string",
+                                             "example": "updatedBy"
+                                        }
+                                   }
+                              }
+                         }
+                    }
+               }
+          },
+          "/api/trainee/delete": {
+               "delete": {
+                    "tags": [
+                         "Trainee"
+                    ],
+                    "security": [
+                         {
+                              "bearerAuth": []
+                         }
+                    ],
+                    "parameters": [
+                         {
+                              "in": "body",
+                              "name": "delete",
+                              "description": "Trainee to delete",
+                              "schema": {
+                                   "type": "object",
+                                   "properties": {
+                                        "originalId": {
+                                             "type": "string"
+                                        },
+                                        "deletedBy": {
+                                             "type": "string"
+                                        }
+                                   }
+                              }
+                         }
+                    ],
+                    "summary": "Get user details",
+                    "responses": {
+                         "200": {
+                              "description": "ok",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "ok"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Trainee Deleted Successfully"
+                                        },
+                                        "data": {
+                                             "properties": {
+                                                  "id": {
+                                                       "type": "string",
+                                                       "example": "5fb2b21498974a2fdcb36f8e"
+                                                  }
+                                             }
+                                        }
+                                   }
+                              }
+                         },
+                         "404": {
+                              "description": "Not Found",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Not found"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Cannot find record to delete"
+                                        },
+                                        "data": {
+                                             "properties": {
+                                                  "id": {
+                                                       "type": "string",
+                                                       "example": "5fb2b21498974a2fdcb36f8e"
+                                                  }
+                                             }
+                                        }
+                                   }
+                              }
+                         },
+                         "403": {
+                              "description": "Unauthorized",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Unauthorized"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "User is Unauthorized"
+                                        }
+                                   }
+                              }
+                         },
+                         "400": {
+                              "description": "Bad request",
+                              "schema": {
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Bad request"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Key not provided"
+                                        },
+                                        "data": {
+                                             "type": "string",
+                                             "example": "deletedBy"
+                                        }
+                                   }
+                              }
+                         }
+                    }
+               }
+          },
+          "/api/user/login": {
+               "post": {
+                    "tags": [
+                         "Users"
+                    ],
+                    "summary": "Login as user",
+                    "parameters": [
+                         {
+                              "name": "Login",
+                              "in": "body",
+                              "schema": {
+                                   "type": "object",
+                                   "properties": {
+                                        "email": {
+                                             "type": "string"
+                                        },
+                                        "password": {
+                                             "type": "string"
+                                        }
+                                   }
+                              },
+                              "required": true
+                         }
+                    ],
+                    "responses": {
+                         "200": {
+                              "description": "ok",
+                              "schema": {
+                                   "type": "object",
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "ok"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Authorization Token"
+                                        },
+                                        "data": {
+                                             "type": "string",
+                                             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjNmM0NzQ0Nzc0MDY1NGYwOTE1ZmFjNyIsImlhdCI6MTU1MDY3NDAxOX0.CgO7FlBHXuttmqM_Sj9AvtzEYZ9yU9GmNJeN60ihsVE"
+                                        }
+                                   }
+                              }
+                         },
+                         "404": {
+                              "description": "Not Found",
+                              "schema": {
+                                   "type": "object",
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "not found"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Invalid user"
+                                        },
+                                        "data": {
+                                             "properties": {
+                                                  "email": {
+                                                       "type": "string",
+                                                       "example": "something@xyz.com"
+                                                  },
+                                                  "password": {
+                                                       "type": "string",
+                                                       "example": "user@123"
+                                                  }
+                                             }
+                                        }
+                                   }
+                              }
+                         },
+                         "401": {
+                              "description": "Unauthorized",
+                              "schema": {
+                                   "type": "object",
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "Unauthorized"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Invalid password"
+                                        },
+                                        "data": {
+                                             "properties": {
+                                                  "password": {
+                                                       "type": "string",
+                                                       "example": "user@123"
+                                                  }
+                                             }
+                                        }
+                                   }
+                              }
+                         }
+                    }
+               }
+          },
+          "/api/user/me": {
+               "get": {
+                    "security": [
+                         {
+                              "bearerAuth": []
+                         }
+                    ],
+                    "tags": [
+                         "Users"
+                    ],
+                    "summary": "Get user details",
+                    "responses": {
+                         "200": {
+                              "description": "ok",
+                              "schema": {
+                                   "type": "object",
+                                   "properties": {
+                                        "status": {
+                                             "type": "string",
+                                             "example": "ok"
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "ME"
+                                        },
+                                        "data": {
+                                             "properties": {
+                                                  "_id": {
+                                                       "type": "string",
+                                                       "example": "5c6c47447740654f0915fac7"
+                                                  },
+                                                  "name": {
+                                                       "type": "string",
+                                                       "example": "Head Tariner"
+                                                  },
+                                                  "role": {
+                                                       "type": "string",
+                                                       "example": "head-traier"
+                                                  },
+                                                  "email": {
+                                                       "type": "string",
+                                                       "example": "headtraier@successive.tech"
+                                                  },
+                                                  "originalId": {
+                                                       "type": "string",
+                                                       "example": "5c6c47447740654f0915fac7"
+                                                  },
+                                                  "password": {
+                                                       "type": "string",
+                                                       "example": "$2b$05$oezRxiVkMy1kTIom7wOMtu2AuFsWSiEceTQSyQqrxseRk3h2yUJ8G"
+                                                  },
+                                                  "createdAt": {
+                                                       "type": "string",
+                                                       "example": "2020-11-16T17:08:36.254+00:00"
+                                                  }
+                                             }
+                                        }
+                                   }
+                              }
+                         },
+                         "401": {
+                              "description": "Unauthorized",
+                              "schema": {
+                                   "type": "object",
+                                   "properties": {
+                                        "error": {
+                                             "properties": {
+                                                  "name": {
+                                                       "type": "string",
+                                                       "example": "JsonWebTokenError"
+                                                  },
+                                                  "message": {
+                                                       "type": "string",
+                                                       "example": "jwt must be provided"
+                                                  }
+                                             }
+                                        },
+                                        "message": {
+                                             "type": "string",
+                                             "example": "Token expired"
+                                        }
+                                   }
+                              }
+                         }
+                    }
+               }
+          }
+     }
+}

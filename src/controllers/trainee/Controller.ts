@@ -22,32 +22,98 @@ class TraineeController {
                const userRepository: UserRepository = new UserRepository();
                const skip = parseInt(req.query.skip.toString(), 10);
                const limit = parseInt(req.query.limit.toString(), 10);
-               if (req.query.sortby.toString() === ''
+               if (req.query.sortby.toString() === 'createdAt'
                     || req.query.sortby === 'name'
                     || req.query.sortby === 'email') {
                          const sort = req.query.sortby;
-                         const data = await userRepository.getAll({}, skip, limit, sort);
+                         const order = req.query.order;
+                         const search = req.query.search.toString();
+                         if (/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g.test(search) === true) {
+                              const data = await userRepository.getAll({name: search}, {skip, limit}, {sort, order});
                               console.log(data);
-                                   res.send({
-                                        message: 'Records fetched',
-                                        data: [
-                                             {
-                                             Total_Records: await userRepository.VerCount({}),
-                                             Showing_Records: data.length,
-                                             Records: data
-                                             }
-                                        ]
+                              if (data.length) {
+                                   res.status(200).send({
+                                        status: 'ok',
+                                        message: 'Successfully fetched Trainees',
+                                        data : {
+                                             count: data.length,
+                                             records: [
+                                                  {
+                                                   data
+                                                  }
+                                             ]
+                                        }
                                    });
-                    }
-                    else {
-                         res.send({
-                              Error: 'Invalid SortBy',
-                              Message: [
-                                   {
-                                   SortBy: 'Only applicable on email and name'
+                              }
+                              else {
+                                   res.status(404).send({
+                                        status: 'Not found',
+                                        message: 'No data Found',
+                                        search: req.query.search
+                                   });
+                              }
+                         }
+                         else if (/^[a-zA-Z0-9+_.-]+@+[a-zA-Z0-9+_.-]+.+[a-zA-Z0-9+_.-]+$/.test(search) === true) {
+                              const data = await userRepository.getAll({email: search}, {skip, limit}, {sort, order});
+                              console.log(data);
+                              if (data.length) {
+                                   res.status(200).send({
+                                        status: 'ok',
+                                        message: 'Successfully fetched Trainees',
+                                        data: {
+                                             count: data.length,
+                                             records: [
+                                                  {
+                                                   data
+                                                  }
+                                             ]
+                                        }
+                                   });
+                              }
+                              else {
+                                   res.status(404).send({
+                                        status: 'Not found',
+                                        message: 'No data Found',
+                                        search: req.query.search
+                                   });
+                              }
+                         }
+                         else {
+                         const data = await userRepository.getAll({}, {skip, limit}, {sort, order});
+                              console.log(data);
+                                   if (data.length) {
+                                        res.status(200).send({
+                                             status: 'ok',
+                                             message: 'Successfully fetched Trainees',
+                                             data: {
+                                                  count: data.length,
+                                                  records: [
+                                                            {
+                                                                  data
+                                                            }
+                                                       ]
+                                                  }
+                                             });
+                                        }
+                                   else {
+                                        res.send({
+                                             status: 'Not found',
+                                             message: 'No data Found',
+                                             data: req.query
+                                        });
                                    }
-                              ]
-                         });
+                         }
+                    }
+               else {
+                    res.status(400).send({
+                         status: 'Bad request',
+                         message: 'Invalid SortBy',
+                         data: [
+                              {
+                              SortBy: 'Only applicable on email and name'
+                              }
+                         ]
+                    });
                     }
           } catch (err) {
                console.log('inside err');
@@ -91,13 +157,13 @@ class TraineeController {
                          const userRepository: UserRepository = new UserRepository();
                          userRepository.createX(req.body );
                          console.log('Inside creteuser method');
-                         res.send({
-                              message: 'Trainee created',
-                              data: [
+                         res.status(200).send({
+                              status: 'ok',
+                              message: 'Trainee Created Successfully',
+                              data:
                                    {
-                                        data: req.body
+                                        data: req.body,
                                    }
-                              ]
                          });
                });
           } catch (err) {
@@ -147,9 +213,9 @@ class TraineeController {
                const prevRec = await userRepository.update(req.body);
                console.log(prevRec);
                if (prevRec === null) {
-                    res.send({
-                         message: 'Unable to update record',
-                         Error: 'Cannot find record to update',
+                    res.status(404).send({
+                         status: 'Not found',
+                         message: 'Cannot find record to update',
                          data: {
                               originalId: req.body.originalId
                          }
@@ -157,8 +223,9 @@ class TraineeController {
                }
                else {
                     console.log('Inside UPDATE method');
-                    res.send({
-                         message: 'Trainee updated',
+                    res.status(200).send({
+                         status: 'ok',
+                         message: 'Trainee Updated Successfully',
                          data: {
                                    Details: req.body
                               }
@@ -169,19 +236,30 @@ class TraineeController {
           }
      }
 
-     deleterec(req: Request, res: Response, next: NextFunction) {
+     async deleterec(req: Request, res: Response, next: NextFunction) {
           try {
-               const userRepository: UserRepository = new UserRepository();
-               userRepository.delete(req.body.id, req.body.deletedBy);
-
                console.log('Inside DELETE method');
-               res.send({
-                    message: 'Trainee deleted',
-                    data: {
-                              name: 'trainee1',
-                              address: 'noida'
+               const userRepository: UserRepository = new UserRepository();
+               const data = await userRepository.delete(req.body.id, req.body.deletedBy);
+               console.log(data);
+               if (data === null) {
+                    res.status(404).send({
+                         status: 'Not found',
+                         message: 'Cannot find record to delete',
+                         data: {
+                              Id: req.body.id
                          }
-               });
+                    });
+               }
+               else {
+                    res.status(200).send({
+                         status: 'ok',
+                         message: 'Trainee Deleted Successfully',
+                         data: {
+                                   id: req.body.id
+                              }
+                    });
+               }
           } catch (err) {
                console.log('inside err');
           }
