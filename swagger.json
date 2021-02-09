@@ -470,7 +470,7 @@
                     }
                }
           },
-          "/api/trainee/delete": {
+          "/api/trainee/delete/{originalId}": {
                "delete": {
                     "tags": [
                          "Trainee"
@@ -482,20 +482,11 @@
                     ],
                     "parameters": [
                          {
-                              "in": "body",
-                              "name": "delete",
+                              "in": "path",
+                              "name": "originalId",
+                              "required": true,
                               "description": "Trainee to delete",
-                              "schema": {
-                                   "type": "object",
-                                   "properties": {
-                                        "originalId": {
-                                             "type": "string"
-                                        },
-                                        "deletedBy": {
-                                             "type": "string"
-                                        }
-                                   }
-                              }
+                              "type": "string"                              
                          }
                     ],
                     "summary": "Get user details",

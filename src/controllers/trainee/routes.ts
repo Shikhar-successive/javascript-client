@@ -23,15 +23,15 @@ traineeRouter.route('/findone')
      .get(authMiddilware('getUsers', 'read'), validationHandler(validation.post), TraineeController.findOne);
 
 traineeRouter.route('/create')
-     .post(authMiddilware('getUsers', 'read'), validationHandler(validation.Newcreate), TraineeController.createUser);
+     .post(authMiddilware('getUsers', 'write'), validationHandler(validation.Newcreate), TraineeController.createUser);
 
 traineeRouter.route('/search')
      .get(authMiddilware('getUsers', 'read'), validationHandler(validation.post), TraineeController.search);
 
-traineeRouter.route('/delete')
-     .delete(authMiddilware('getUsers', 'read'), validationHandler(validation.delete), TraineeController.deleterec);
+traineeRouter.route('/delete/:id')
+     .delete(authMiddilware('getUsers', 'delete'), validationHandler(validation.delete), TraineeController.deleterec);
 
 traineeRouter.route('/update')
-     .put(authMiddilware('getUsers', 'read'), validationHandler(validation.update), TraineeController.update);
+     .put(authMiddilware('getUsers', 'write'), validationHandler(validation.update), TraineeController.update);
 
 export default traineeRouter;

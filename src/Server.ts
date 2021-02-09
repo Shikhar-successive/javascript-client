@@ -1,7 +1,7 @@
-import * as experss from 'express';
+import * as express from 'express';
 import * as bodyParser from 'body-parser';
-// import swaggerUi from 'swagger-ui-express';
-// import swaggerDocument from '../swagger.json'
+import * as cors from 'cors';
+import { Request, Response, NextFunction } from 'express';
 
 import { notFoundHandeler, errorHandler } from './libs/routes';
 import routes from './router';
@@ -14,7 +14,7 @@ swaggerDocument = require('../swagger.json');
  class Server {
      app;
      constructor(private config: IConfig) {
-          this.app = experss();
+          this.app = express();
      }
 
      bootstrap() {
@@ -23,13 +23,18 @@ swaggerDocument = require('../swagger.json');
           return this;
      }
 
+     options = {
+          origin: '*',
+          optionsSuccessStatus: 200,
+     }
+
      setupRoutes() {
           const {app} = this;
-          this.app.get('/health-check', (req, res, next) => {
+          this.app.get('/health-check', (req: Request, res: Response, next: NextFunction) => {
                res.send('I am ok');
           });
 
-          this.app.use('/api', routes);
+          this.app.use('/api', cors(this.options), routes);
 
           this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

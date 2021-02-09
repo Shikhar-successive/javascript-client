@@ -15,6 +15,12 @@ export default () => {
                          console.log(err);
                     }
                     else {
+                         userRepository.createX({ name: 'Trainee1',
+                                                  role: 'trainee',
+                                                  email: 'Trainee1@successive.tech',
+                                                  password: data});
+
+
                          userRepository.createX({ name: 'Head Trainer',
                                                   role: 'head-trainer',
                                                   email: 'headtrainer@successive.tech',

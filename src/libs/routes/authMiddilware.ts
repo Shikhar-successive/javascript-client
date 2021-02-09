@@ -20,16 +20,22 @@ export default(module, permissionType) => (req: Request, res: Response, next: Ne
                     next();
                }
                else {
-                     res.status(401).send({
+                     res.status(403).send({
                          status: 'Unauthorized',
-                         message: 'User is Unauthorized'
+                         message: 'User is Unauthorized',
+                         data: {
+                              role: decodeUser.docs.role
+                         }
                     });
                }
 
           } catch (err) {
-               res.status(404).send({
-                    error: err,
-                    message: 'Token Expired'
+               res.status(401).send({
+                    status: 'Unauthorized',
+                    message: 'Token Expired',
+                    data: {
+                         error: err
+                    }
                });
           }
 };

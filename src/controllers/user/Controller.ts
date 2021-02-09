@@ -28,7 +28,7 @@ class UserController {
                          console.log(docs);
                          res.status(404).send({
                               status: 'Not found',
-                              message: 'Invalid User',
+                              message: 'Invalid Email',
                               data: {
                                         name: req.body,
                                    }

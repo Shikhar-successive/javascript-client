@@ -30,18 +30,16 @@ class TraineeController {
                          const search = req.query.search.toString();
                          if (/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g.test(search) === true) {
                               const data = await userRepository.getAll({name: search}, {skip, limit}, {sort, order});
+                              const totalCount = await userRepository.VerCount({});
                               console.log(data);
                               if (data.length) {
                                    res.status(200).send({
                                         status: 'ok',
                                         message: 'Successfully fetched Trainees',
                                         data : {
+                                             totalRecords: totalCount,
                                              count: data.length,
-                                             records: [
-                                                  {
-                                                   data
-                                                  }
-                                             ]
+                                             records: data
                                         }
                                    });
                               }
@@ -55,18 +53,16 @@ class TraineeController {
                          }
                          else if (/^[a-zA-Z0-9+_.-]+@+[a-zA-Z0-9+_.-]+.+[a-zA-Z0-9+_.-]+$/.test(search) === true) {
                               const data = await userRepository.getAll({email: search}, {skip, limit}, {sort, order});
+                              const totalCount = await userRepository.VerCount({});
                               console.log(data);
                               if (data.length) {
                                    res.status(200).send({
                                         status: 'ok',
                                         message: 'Successfully fetched Trainees',
                                         data: {
+                                             totalRecords: totalCount,
                                              count: data.length,
-                                             records: [
-                                                  {
-                                                   data
-                                                  }
-                                             ]
+                                             records: data                                                  
                                         }
                                    });
                               }
@@ -80,19 +76,17 @@ class TraineeController {
                          }
                          else {
                          const data = await userRepository.getAll({}, {skip, limit}, {sort, order});
+                         const totalCount = await userRepository.VerCount({});
                               console.log(data);
                                    if (data.length) {
                                         res.status(200).send({
                                              status: 'ok',
                                              message: 'Successfully fetched Trainees',
                                              data: {
+                                                  totalRecords: totalCount,
                                                   count: data.length,
-                                                  records: [
-                                                            {
-                                                                  data
-                                                            }
-                                                       ]
-                                                  }
+                                                  records: data
+                                             }
                                              });
                                         }
                                    else {
@@ -160,10 +154,8 @@ class TraineeController {
                          res.status(200).send({
                               status: 'ok',
                               message: 'Trainee Created Successfully',
-                              data:
-                                   {
-                                        data: req.body,
-                                   }
+                              data: req.body,
+                                   
                          });
                });
           } catch (err) {
@@ -226,9 +218,7 @@ class TraineeController {
                     res.status(200).send({
                          status: 'ok',
                          message: 'Trainee Updated Successfully',
-                         data: {
-                                   Details: req.body
-                              }
+                         data: prevRec
                     });
                }
           } catch (err) {
@@ -240,14 +230,14 @@ class TraineeController {
           try {
                console.log('Inside DELETE method');
                const userRepository: UserRepository = new UserRepository();
-               const data = await userRepository.delete(req.body.id, req.body.deletedBy);
+               const data = await userRepository.delete(req.params.id, req.body.deletedBy);
                console.log(data);
                if (data === null) {
                     res.status(404).send({
                          status: 'Not found',
                          message: 'Cannot find record to delete',
                          data: {
-                              Id: req.body.id
+                              Id: req.params.id
                          }
                     });
                }
@@ -256,7 +246,7 @@ class TraineeController {
                          status: 'ok',
                          message: 'Trainee Deleted Successfully',
                          data: {
-                                   id: req.body.id
+                                   id: req.params.id
                               }
                     });
                }

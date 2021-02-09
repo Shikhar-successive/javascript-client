@@ -2,24 +2,18 @@ import * as mongoose from 'mongoose';
 import seedData from './seedData';
 
 class Database {
-     static open(MongoURL) {
-
-          return new Promise((resolve, reject) => {
-               console.log('inside open');
-               mongoose.connect(MongoURL, { useUnifiedTopology: true, useNewUrlParser: true }, (err) => {
-                    if (err) {
-                         reject(err);
-                         return;
-                    }
-                    seedData();
-                    resolve();
-               });
+     static async open(MongoURL) {
+          console.log('inside open');
+          await mongoose.connect(MongoURL, { useUnifiedTopology: true, useNewUrlParser: true }, (err) => {
+               if (err) {
+                    return err;
+               }
+               seedData();
           });
-
      }
 
-     static disconnect() {
-          mongoose.connection.close((err) => {
+     static async disconnect() {
+          await mongoose.connection.close((err) => {
                if (err) {
                     console.log(err);
                     return;

@@ -35,11 +35,12 @@ const config = {
                     required: true,
                     string: true,
                     errorMessage: 'Id is required',
-                    in: ['body']
+                    in: ['params']
                     },
                deletedBy: {
-                    required: true,
+                    required: false,
                     string: true,
+                    default: 'Admin',
                     errorMessage: 'deletedby is required',
                     in: ['body']
                     }
